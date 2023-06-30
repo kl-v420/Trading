@@ -6,10 +6,8 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.sentinelcorp.model.Account;
-import com.sentinelcorp.model.Order;
-import com.sentinelcorp.model.Portofio;
-import com.sentinelcorp.model.Stock;
+import com.sentinelcorp.trading.model.Account;
+import com.sentinelcorp.trading.model.Order;
 
 @SpringBootTest
 public class TradingApplicationTests {
@@ -21,34 +19,20 @@ public class TradingApplicationTests {
 		jorji.setName("Jorji Costava");
 		jorji.setPassword("123456789");
 
-		Stock gamestop = new Stock();
-		gamestop.setName("Gamestop");
-		gamestop.setPrice(new BigDecimal(30));
-		gamestop.setVolume(100);
-		gamestop.setTicker("GME");
-
 		Order apple = new Order();
-		apple.setTicker("AAPL");
+		apple.setSymbol("AAPL");
 		apple.setNumShares(1000000);
-		apple.setPrice(new BigDecimal(130));
-		apple.setDate(LocalDateTime.now());
+		apple.setLimitPrice(new BigDecimal(130));
+		apple.setPlaceTime(LocalDateTime.now());
 
 		Order TMobile = new Order();
-		TMobile.setTicker("TMUS");
+		TMobile.setSymbol("TMUS");
 		TMobile.setNumShares(1000);
-		TMobile.setPrice(new BigDecimal(5));
-		TMobile.setDate(LocalDateTime.now());
-
-		Portofio ledger = new Portofio();
-		ledger.addOrder(apple);
-		ledger.addOrder(TMobile);
+		TMobile.setLimitPrice(new BigDecimal(5));
+		TMobile.setPlaceTime(LocalDateTime.now());
 
 		System.out.println("------------------------");
 		System.out.println(jorji);
-		System.out.println("------------------------");
-		System.out.println(gamestop);
-		System.out.println("------------------------");
-		System.out.println(ledger);
 	}
 
 }

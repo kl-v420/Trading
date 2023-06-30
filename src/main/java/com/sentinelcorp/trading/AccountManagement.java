@@ -1,67 +1,54 @@
 package com.sentinelcorp.trading;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
-import com.sentinelcorp.model.Account;
+import com.sentinelcorp.trading.model.Account;
+import com.sentinelcorp.trading.repository.AccountsRepository;
 
+@Controller
 public class AccountManagement {
-	private List<Account> accountList;
-	private FileDataBase db;
-
-	public AccountManagement() {
-		this.accountList = new ArrayList<Account>();
-		this.db = new FileDataBase();
-	}
-
-	public List<Account> getAccountList() {
-		return accountList;
-	}
-
-	public void readAccounts() {
-		accountList = db.readAccounts();
-	}
+	@Autowired
+	private AccountsRepository repo;
 
 	public void addAccount(String email, String name, String password) {
-		String sha256hex = DigestUtils.sha256Hex(password);
-		Account account1 = new Account();
-		account1.setEmail(email);
-		account1.setName(name);
-		account1.setPassword(sha256hex);
-		accountList.add(account1);
-		db.saveAccounts(accountList);
+		if (!searchDupe(email)) {
+			Account account1 = new Account();
+			account1.setEmail(email);
+			account1.setName(name);
+			account1.setPassword(encrypt(password));
+			account1.setAmount(BigDecimal.ZERO);
+			repo.save(account1);
+		}
+	}
 
+	public String encrypt(String s) {
+		return DigestUtils.sha256Hex(s);
 	}
 
 	public void deposit(String email, BigDecimal depCount) {
-		int i = 0;
-		boolean found = false;
-		while (!found && i < accountList.size()) {
-			Account account = accountList.get(i);
-			if (email.equals(account.getEmail())) {
-				account.setAmount(depCount.add(account.getAmount()));
-				db.saveAccounts(accountList);
-				found = true;
-			}
-			i++;
-		}
+		Account account = repo.findByEmailIgnoreCase(email);
+		account.setAmount(depCount.add(account.getAmount()));
+		repo.save(account);
+	}
+
+	public boolean searchDupe(String email) {
+		return repo.countByEmailIgnoreCase(email) != 0;
 	}
 
 	public boolean login(String email, String password) {
-		boolean found = false;
-		int i = 0;
+		password = encrypt(password);
+		return repo.countByEmailIgnoreCaseAndPassword(email, password) != 0;
+	}
 
-		while (!found && i < accountList.size()) {
-			String sha256hex = DigestUtils.sha256Hex(password);
-			if (email.equalsIgnoreCase(accountList.get(i).getEmail())
-					&& sha256hex.equals(accountList.get(i).getPassword())) {
-				found = true;
-			}
-			i++;
-		}
-		return found;
+	public Account findByEmail(String email) {
+		return repo.findByEmailIgnoreCase(email);
+	}
+
+	public void deleteById(int id) {
+		repo.deleteById(id);
 	}
 }

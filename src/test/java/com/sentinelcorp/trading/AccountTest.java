@@ -1,34 +1,52 @@
 package com.sentinelcorp.trading;
 
+import java.math.BigDecimal;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.sentinelcorp.trading.model.Account;
 
 @SpringBootTest
 public class AccountTest {
+	@Autowired
 	private AccountManagement management;
 
+	private static final String EMAIL = "JordanJohns11@gmail.com";
+	private static final String PASSWORD = "JoeMamalol";
+	private static final String NAME = "John";
+	private static final BigDecimal DEPOSIT = BigDecimal.valueOf(10000);
+
 	@Test
-	public void test() {
-		management = new AccountManagement();
-		management.addAccount("JordanJohns11@gmail.com", "John", "JoeMamalol");
-		management.addAccount("a@yahoo.com", "Moe", "0987654321");
-		Assertions.assertEquals("John", management.getAccountList().get(0).getName());
-		Assertions.assertEquals("Moe", management.getAccountList().get(1).getName());
+	public void addTest() {
+		management.addAccount(EMAIL, NAME, PASSWORD);
+		Account actual = management.findByEmail(EMAIL);
+
+		Assertions.assertEquals(EMAIL, actual.getEmail());
+		Assertions.assertEquals(management.encrypt(PASSWORD), actual.getPassword());
+		Assertions.assertEquals(NAME, actual.getName());
+		Assertions.assertTrue(actual.getId() > 0);
 	}
 
 	@Test
-	public void readTest() {
-		management = new AccountManagement();
-		management.readAccounts();
-		Assertions.assertEquals("John", management.getAccountList().get(0).getName());
-		Assertions.assertEquals("Moe", management.getAccountList().get(1).getName());
+	public void afterDupeTest() {
+		Assertions.assertTrue(management.searchDupe(EMAIL));
 	}
 
 	@Test
 	public void loginTest() {
-		management = new AccountManagement();
-		management.readAccounts();
-		Assertions.assertTrue(management.login("JordanJohns11@gmail.com", "JoeMamalol"));
+		Assertions.assertTrue(management.login(EMAIL, PASSWORD));
+	}
+
+	@Test
+	public void depositTest() {
+		Account expected = management.findByEmail(EMAIL);
+		BigDecimal expectedAmount = expected.getAmount().add(DEPOSIT);
+
+		management.deposit(EMAIL, DEPOSIT);
+		Account actual = management.findByEmail(EMAIL);
+		Assertions.assertEquals(expectedAmount, actual.getAmount());
 	}
 }
