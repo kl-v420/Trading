@@ -10,4 +10,6 @@ public interface OrdersRepository extends JpaRepository<Order, Integer> {
 	public List<Order> findAllByAccountIdAndFinishFalse(int id);
 
 	public List<Order> findAllByFinishFalse();
+
+	public List<Order> findAllByAccountId(int id);
 }

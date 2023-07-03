@@ -1,0 +1,36 @@
+<html> 
+	<head> 
+	<title>1616 Trading - Account Creator</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+	$(document).ready(function(){
+		$("#makeForm").submit(function(){
+		 $.get("trading/account/createAccount?" + $("#makeForm").serialize(), function(data){
+		 alert(data);
+			
+		});
+	});
+	});
+</script>
+	</head>
+	
+	<body>
+		<center>
+			Please Enter Your Preferred Email, Name, and Password 
+			<br/>
+			<br/>
+			<form id = "makeForm">
+	<label for="name">Name:</label><br/>
+  	<input type="name" id="name" name="name"/><br/>
+  	<label for="email">Email:</label></br>
+  	<input type="text" id="email" name="email"/><br/>
+  	<label for="password">Password:</label><br/>
+  	<input type="password" id="password" name="password"/><br/>
+  	<input type="submit" value="Submit"/></br>
+			</form>
+		<br/>
+		</center>
+		
+	</body>
+
+</html>
