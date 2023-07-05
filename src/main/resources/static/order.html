@@ -1,43 +1,50 @@
 <html> 
 	<head> 
 	<title>1616 Trading - Order</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<script>
 $(document).ready(function(){
-    $.get("trading/order/getAll", function(data){
-    var table = '<table>';
-    table+='<tr>';
-    
-    table+='<th>Symbol</th>';
-    table+='<th>limitPrice</th>';
-    table+='<th>Commission</th>';
-    table+='<th>numShares</th>';
-    table+='<th>finish</th>';
-    table+='<th>day</th>';
-    table+='<th>fillTime</th>';
-    table+='<th>status</th>';
-    table+='<th>price</th>';
-    
-    table+='</tr>';
-    for(var i = 0; i < data.length; i++){
-    table+='<tr>';
-    table+='<td>'+data[i].symbol+'</td>';
-    table+='<td>'+data[i].limitPrice+'</td>';
-    table+='<td>'+data[i].commission+'</td>';
-    table+='<td>'+data[i].numShares+'</td>';
-    table+='<td>'+data[i].finish+'</td>';
-    table+='<td>'+data[i].day+'</td>';
-    table+='<td>'+data[i].fillTime+'</td>';
-    table+='<td>'+data[i].status+'</td>';
-    table+='<td>'+data[i].price+'</td>';
-    table+='</tr>';
-    }
-    
-    table+='</table>';
-    
-    $("#ptable").html(table);
-    });
-});
+	var token = Cookies.get("token"); 
+	console.log(token);
+	if(!token){
+		window.location.href = "login.html";
+	} else {
+	    	$.get("trading/order/getAll?token=" + token, function(data) {
+				if(data.length > 0){
+					var table = '<table>';
+				    table+='<th>symbol</th>';
+				    table+='<th>limitPrice</th>';
+				    table+='<th>commission</th>';
+				    table+='<th>numShares</th>';
+				    table+='<th>finish</th>';
+				    table+='<th>day</th>';
+				    table+='<th>fillTime</th>';
+				    table+='<th>status</th>';
+				    table+='<th>price</th>';
+					table += '</tr>';
+					for (var i = 0; i < data.length; i++) {
+						table += '<tr>';
+						table += '<td>' + data[i].symbol + '</td>';
+						table += '<td>' + data[i].limitPrice + '</td>';
+						table += '<td>' + data[i].commission + '</td>';
+						table +='<td>' + data[i].numShares + '</td>';
+						table +='<td>' + data[i].finish + '</td>';
+						table +='<td>'+ data[i].day +  '</td>';					
+						table +='<td>' + data[i].fillTime + '</td>';
+						table +='<td>' + data[i].status + '</td>';
+						table +='<td>'+ data[i].price + '</td>';
+						table += '</tr>';
+					}
+		
+					table += '</table>';
+		
+					$("#ptable").html(table);
+				}
+			});
+    	}
+	});
 </script>
 	</head>
 	

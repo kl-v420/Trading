@@ -1,42 +1,47 @@
-<html> 
-	<head> 
-	<title>1616 Trading - Portfolio</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-	<script>
-$(document).ready(function(){
-    $.get("trading/position/getAll", function(data){
-    var table = '<table>';
-    table+='<tr>';
-    table+='<th>Symbol</th>';
-    table+='<th>Quantity</th>';
-    table+='<th>Price</th>';
-    table+='</tr>';
-    for(var i = 0; i < data.length; i++){
-    table+='<tr>';
-    table+='<td>'+data[i].symbol+'</td>';
-    table+='<td>'+data[i].quantity+'</td>';
-    table+='<td>'+data[i].price+'</td>';
-    table+='</tr>';
-    }
-    
-    table+='</table>';
-    
-    $("#ptable").html(table);
-    });
-});
-</script>
-	</head>
+<html>
+<head>
+<title>1616 Trading - Portfolio</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script>
+	$(document).ready(function() {
+		var token = Cookies.get("token"); 
+		console.log(token);
+		if(!token){
+			window.location.href = "login.html";
+		} else {
+			$.get("trading/position/getAll?token=" + token, function(data) {
+				if(data.length > 0){
+				var table = '<table>';
+				table += '<tr>';
+				table += '<th>Symbol</th>';
+				table += '<th>Quantity</th>';
+				table += '<th>Price</th>';
+				table += '</tr>';
+				for (var i = 0; i < data.length; i++) {
+					table += '<tr>';
+					table += '<td>' + data[i].symbol + '</td>';
+					table += '<td>' + data[i].quantity + '</td>';
+					table += '<td>' + data[i].price + '</td>';
+					table += '</tr>';
+				}
 	
-	<body>
-		<center>
-				<div id="ptable"></div>
-				<br/>
-				<br/>
-				<div id="test"></div>
-				<br/>
-				<a href="order.html">My Most Recent Orders</a>
-				<br/>
-				<a href="index.html">Back to Home</a>
-		</center>
-	</body>
+				table += '</table>';
+	
+				$("#ptable").html(table);
+				}
+			});
+		}
+	});
+</script>
+</head>
+
+<body>
+	<center>
+		<div id="ptable">You don't have any positions</div>
+		<br /> <br />
+		<br /> <a href="order.html">My Most Recent Orders</a> <br /> <a
+			href="logout.html">Logout?</a>
+	</center>
+</body>
 </html>

@@ -1,22 +1,43 @@
-<html> 
-	<head> 
-	<title>1616 Trading</title>
-	</head>
-	
-	<body>
-		<center>
-			Please Enter Your Email and Password 
-			<form>
-  	<label for="email">Email:</label></br>
-  	<input type="text" id="email" name="email"/><br/>
-  	<label for="password">Password:</label><br/>
-  	<input type="password" id="password" name="password"/><br/>
-  	<input type="submit" value="Submit"/></br>
-			</form>
-		<br/>
+<html>
+
+<head>
+	<title>1616 Trading - Login</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			Cookies.remove("token");
+			$("#submit").click(function () {
+				$.get("trading/account/login?" + $("#loginForm").serialize(), function (data) {
+					console.log("Token: " + data);
+					
+					if(data.length > 0){
+						Cookies.set('token', data)
+						window.location.href = "portfolio.html";
+					}else{
+						$("#error").html("<font color=\"red\">Your input is invalid</font>");
+					}
+				});
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<center>
+		Please Enter Your Email and Password
+		<form id="loginForm">
+			<label for="email">Email:</label><br />
+			<input type="text" id="email" name="email" /><br />
+			<label for="password">Password:</label><br />
+			<input type="password" id="password" name="password" /><br />
+			<input type="button" id="submit" value="Submit" /><br />
+		</form>
+		<div id = "error"></div>
+		<br /> 
 		<a href="passwordRecovery.html">Forgot Password?</a>
-		</center>
-		
-	</body>
+	</center>
+
+</body>
 
 </html>

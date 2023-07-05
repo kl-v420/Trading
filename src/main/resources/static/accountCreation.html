@@ -4,10 +4,11 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 	<script>
 	$(document).ready(function(){
-		$("#makeForm").submit(function(){
+		$("#submit").click(function(){
 		 $.get("trading/account/createAccount?" + $("#makeForm").serialize(), function(data){
-		 alert(data);
-			
+			// tell them account has been created!
+			// send them back to the login page
+			// disable submit button
 		});
 	});
 	});
@@ -26,7 +27,7 @@
   	<input type="text" id="email" name="email"/><br/>
   	<label for="password">Password:</label><br/>
   	<input type="password" id="password" name="password"/><br/>
-  	<input type="submit" value="Submit"/></br>
+  	<input type="button" id="submit" value="Submit" /><br />
 			</form>
 		<br/>
 		</center>

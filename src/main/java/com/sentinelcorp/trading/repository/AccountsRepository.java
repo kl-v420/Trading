@@ -9,5 +9,5 @@ public interface AccountsRepository extends JpaRepository<Account, Integer> {
 
 	public long countByEmailIgnoreCase(String email);
 
-	public long countByEmailIgnoreCaseAndPassword(String email, String password);
+	public Account findByEmailIgnoreCaseAndPassword(String email, String password);
 }

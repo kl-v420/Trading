@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sentinelcorp.trading.model.Account;
+import com.sentinelcorp.trading.rest.AccountRest;
 
 @SpringBootTest
 public class AccountTest {
 	@Autowired
-	private AccountManagement management;
+	private AccountRest management;
 
 	private static final String EMAIL = "JordanJohns11@gmail.com";
 	private static final String PASSWORD = "JoeMamalol";
@@ -21,7 +22,7 @@ public class AccountTest {
 
 	@Test
 	public void addTest() {
-		management.addAccount(EMAIL, NAME, PASSWORD);
+		management.createAccount(NAME, EMAIL, PASSWORD);
 		Account actual = management.findByEmail(EMAIL);
 
 		Assertions.assertEquals(EMAIL, actual.getEmail());
@@ -37,7 +38,7 @@ public class AccountTest {
 
 	@Test
 	public void loginTest() {
-		Assertions.assertTrue(management.login(EMAIL, PASSWORD));
+		Assertions.assertTrue(!management.login(EMAIL, PASSWORD).isEmpty());
 	}
 
 	@Test

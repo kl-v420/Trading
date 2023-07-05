@@ -24,7 +24,6 @@ public class OrderRepositoryTest {
 //		order.setPrice(BigDecimal.valueOf(10));
 //		repository.save(order);
 		System.out.println(repository.findAll());
-
 	}
 
 }
