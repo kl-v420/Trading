@@ -1,0 +1,122 @@
+<html> 
+	<head> 
+	<title>1616 Trading - Trades</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<style type="text/css">
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { margin: .2em 0; }
+  
+  fieldset {
+    border: none;
+    padding: 0;
+  }
+  </style>
+<script>
+	$(document).ready(function() {
+		var token = Cookies.get("token"); 
+	
+		if(!token){
+			window.location.href = "login.html";
+		} else {
+			$.get("trading/account/findAmount?token=" + token, function(data) {
+				if(data.length > 0){
+					$("#totalFunds").html("<font color=\"green\">Current Funds: $" + data + "</font>");
+				}
+			});
+			
+			
+			$("#quote").click(function () {
+				if($("#symbol").val().length == 0) {
+					$("#status").html("<font color=\"red\">You can't enter nothing</font>");
+				}
+				else if(!isNaN($("#symbol").val())) {
+					$("#status").html("<font color=\"red\">No quote is all Numbers</font>");
+				}else{
+					$("#status").html("<div id = \"status\"></div>");
+					
+					$.get("trading/getStock?token="+ token + "&" + $("#tradeForm").serialize(), function (data) {
+						if(data){
+							$("#stockPrice").html("<font color=\"green\">Stock Price: $" + data.c + "</font>");
+						
+						  	var newForm = '<form id = "buyForm"><br/>';
+						  	newForm += '<label for="orderType">Order Type:</label><br />'
+						  	newForm += '<fieldset  id="orderType"><input type="radio" id="market" checked name="orderType" value="market">market';
+						  	newForm += '<input type="radio" id="limit" name="orderType" value="limit">limit</fieldset><br />';
+					  		newForm += '<label for="quantity">Quantity:</label><br />';
+					  		newForm += '<input type="text" id="quantity" name="quantity"/><br/><br/>';
+					  		newForm += '<label for="timeInForce">Time In Force:</label><br />';
+					  		newForm += '<fieldset id="timeInForce"><input type="radio" id="day" checked name="timeInForce" value="day">Day';
+					  		newForm += '<input type="radio" id="gtc" name="timeInForce" value="gtc">GTC</fieldset><br />';
+					  		newForm += '<div id = "lp"></div>';
+					  		newForm += '<input type="button" id="buy" value="Buy" /><br /></form>';
+					  		$("#form2").html(newForm);
+						}
+					});
+				}
+			});	
+			
+			$("#form2").on("click", "#buy", function(){
+				if($("#quantity").val().length == 0) {
+					$("#status").html("<font color=\"red\">You can't enter nothing for quantity</font>");
+				}
+				else if(isNaN($("#quantity").val())) {
+					$("#status").html("<font color=\"red\">Quantity should be a number</font>");
+					
+				}
+				else if($("#quantity").val() <= 0) {
+					$("#status").html("<font color=\"red\">You can't enter a negative quantity</font>");
+				}
+				else if($("#limitPrice").length > 0 && $("#limitPrice").val().length == 0) {
+						$("#status").html("<font color=\"red\">You can't enter nothing for Limit Price</font>");
+				}
+				else if($("#limitPrice").length > 0 && isNaN($("#limitPrice").val())) {
+					$("#status").html("<font color=\"red\">Limit Price should be a number</font>");
+					
+				}
+				else if($("#limitPrice").length > 0 && $("#limitPrice").val() <= 0) {
+					$("#status").html("<font color=\"red\">You can't enter a negative Limit Price</font>");
+				}else{
+					$.get("trading/buyStock?token="+ token + "&"+ $("#tradeForm").serialize() + "&" + $("#buyForm").serialize(), function (data) {
+						if(data){
+							window.location.href = "order.html";
+						}
+					});
+				}
+			});
+			
+			$("#form2").on("click", "#market", function(){
+				var newLimit = '<div id = "lp"></div>';
+		  		$("#lp").html(newLimit);
+			});
+			
+			$("#form2").on("click", "#limit", function(){
+				var newLimit = '<label for="limitPrice">Limit Price:</label><br />';
+		  		newLimit += '<input type="text" id="limitPrice" name="limitPrice"/><br/><br/>';
+		  		$("#lp").html(newLimit);
+			});
+		}
+	});
+</script>
+	</head>
+	
+	
+	<body>
+		<center>
+			Trading Form
+			<form id = "tradeForm">
+  	<label for="symbol">Symbol:</label><br />
+  	<input type="text" id="symbol" name="symbol"/><br />
+  	<input type="button" id="quote" value="Quote" /><br />
+			</form>
+		<br/><div id = "totalFunds">totalFunds</div>
+		<div id = "stockPrice"></div>
+		<div id = "form2"></div>
+		<div id = "status"></div>
+		<br/>
+		<a href="portfolio.html">Go Back</a>
+		</center>
+		
+	</body>
+
+</html>

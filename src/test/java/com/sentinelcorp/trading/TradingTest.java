@@ -13,6 +13,7 @@ import com.sentinelcorp.trading.model.Stock;
 import com.sentinelcorp.trading.repository.AccountsRepository;
 import com.sentinelcorp.trading.repository.OrdersRepository;
 import com.sentinelcorp.trading.repository.PositionsRepository;
+import com.sentinelcorp.trading.rest.TradeRest;
 
 @SpringBootTest
 public class TradingTest {
@@ -20,7 +21,7 @@ public class TradingTest {
 	private static final String SYMBOL = "GGG";
 	private static final int NUM_SHARES = 2;
 	@Autowired
-	private TradeManagement management;
+	private TradeRest management;
 
 	@Autowired
 	private AccountsRepository accRepo;
@@ -85,7 +86,8 @@ public class TradingTest {
 
 	@Test
 	public void test6() {
-		Stock gme = management.getStock("GME");
+		TokenChecker.addToken(EMAIL, null, false);
+		Stock gme = management.getStock(EMAIL, "GME");
 		Assertions.assertTrue(gme.getC() > 0);
 	}
 

@@ -1,0 +1,63 @@
+<html> 
+	<head> 
+	<title>1616 Trading - Deposit</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script>
+	$(document).ready(function() {
+		var token = Cookies.get("token"); 
+	
+		if(!token){
+			window.location.href = "login.html";
+		} else {
+			$.get("trading/account/findAmount?token=" + token, function(data) {
+				if(data.length > 0){
+					$("#totalFunds").html("<font color=\"Green\">Current Funds: $" + data + "</font>");
+				}
+			});
+			
+			
+			$("#submit").click(function () {
+				if($("#amount").val().length == 0) {
+					$("#status").html("<font color=\"red\">You can't enter nothing</font>");
+				}
+				else if(isNaN($("#amount").val())) {
+					$("#status").html("<font color=\"red\">You have to enter a number</font>");
+				}
+				else if($("#amount").val() <= 0) {
+					$("#status").html("<font color=\"red\">You can't go into debt</font>");
+				}
+				else if($("#amount").val() >= 100000) {
+					$("#status").html("<font color=\"red\">You dont have enough money in your bank account</font>");
+				}else{
+					$.get("trading/account/deposit?token="+ token + "&" + $("#depositForm").serialize(), function (data) {
+		
+						if(data.length > 0){
+							$("#totalFunds").html("<font color=\"Green\">Current Funds: $" + data + "</font>");
+						}
+					});
+				}
+			});	
+		}
+	});
+</script>
+	</head>
+	
+	
+	<body>
+		<center>
+			Enter Amount to Transfer into Your Account
+			<form id = "depositForm">
+  	<label for="amount">Amount:</label><br />
+  	<input type="text" id="amount" name="amount"/><br />
+  	<input type="button" id="submit" value="Deposit" /><br />
+			</form>
+		<br/><div id = "totalFunds">totalFunds</div>
+		<div id = "status"></div>
+		<br/>
+		<a href="portfolio.html">Go Back</a>
+		</center>
+		
+	</body>
+
+</html>

@@ -10,6 +10,12 @@
 		if(!token){
 			window.location.href = "login.html";
 		} else {
+			$.get("trading/account/findAmount?token=" + token, function(data) {
+				if(data.length > 0){
+					$("#amount").html("<font color=\"Green\">Total Funds: $" + data + "</font>");
+				}
+			});
+			
 			$.get("trading/position/getAll?token=" + token, function(data) {
 				if(data.length > 0){
 				var table = '<table>';
@@ -39,9 +45,17 @@
 <body>
 	<center>
 		<div id="ptable">You don't have any positions</div>
-		<br /> <br />
-		<br /> <a href="order.html">My Most Recent Orders</a> <br /> <a
-			href="logout.html">Logout?</a>
+		<br /> 
+		 <div id = "amount">Total Funds</div>
+		 <br /> <a href="order.html">My Most Recent Orders</a>
+		 <br />
+		 <a href="deposit.html">Deposit Money Here</a>		 
+		 <br />
+		 <a href="trades.html">Get more Stocks Here</a>
+		 <br />		 
+		 <a href="logout.html">Logout?</a>
+		 
+		 
 	</center>
 </body>
 </html>

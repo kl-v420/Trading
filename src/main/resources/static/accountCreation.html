@@ -5,14 +5,28 @@
 	<script>
 	$(document).ready(function(){
 		$("#submit").click(function(){
-		 $.get("trading/account/createAccount?" + $("#makeForm").serialize(), function(data){
-			// tell them account has been created!
-			// send them back to the login page
-			// disable submit button
+			if($("#name").val().length == 0) {
+				$("#status").html("<font color=\"red\">Your name cannot be empty</font>");
+			} else if($("#email").val().indexOf("@") == -1 || $("#email").val().indexOf(".") == -1) {
+				$("#status").html("<font color=\"red\">Your email is invalid</font>");
+			} else if($("#password").val().length <= 7) {
+				$("#status").html("<font color=\"red\">Your password needs to be at least 8 characters long</font>");
+			}else{
+				$.get("trading/account/createAccount?" + $("#makeForm").serialize(), function (data) {
+					console.log("Data: " + data);
+					if(data){
+						$("#status").html("<font color=\"green\">Your account has been created</font><br/><a href = \"login.html\">Login Here</a>");
+						$("#submit").prop('disabled', true);
+						
+					}else{
+						$("#status").html("<font color=\"red\">uhhhhhhh</font>");
+					}
+				});
+			}
 		});
-	});
-	});
+});
 </script>
+
 	</head>
 	
 	<body>
@@ -29,6 +43,9 @@
   	<input type="password" id="password" name="password"/><br/>
   	<input type="button" id="submit" value="Submit" /><br />
 			</form>
+		<br/>
+		<div id="status"></div>
+		<a href="login.html">Back to Login</a>
 		<br/>
 		</center>
 		

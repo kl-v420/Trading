@@ -46,7 +46,9 @@ public class AccountTest {
 		Account expected = management.findByEmail(EMAIL);
 		BigDecimal expectedAmount = expected.getAmount().add(DEPOSIT);
 
-		management.deposit(EMAIL, DEPOSIT);
+		TokenChecker.addToken(EMAIL, expected, true);
+
+		management.deposit(EMAIL, DEPOSIT.toString());
 		Account actual = management.findByEmail(EMAIL);
 		Assertions.assertEquals(expectedAmount, actual.getAmount());
 	}

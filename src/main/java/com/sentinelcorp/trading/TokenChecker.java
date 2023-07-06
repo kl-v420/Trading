@@ -57,4 +57,14 @@ public class TokenChecker {
 		return account;
 	}
 
+	public static Token getByAccountId(int id) {
+		Token token = null;
+		for (Token t : TOKEN_MAP.values()) {
+			if (t.getAccount().getId() == id) {
+				token = t;
+			}
+		}
+		return token;
+
+	}
 }

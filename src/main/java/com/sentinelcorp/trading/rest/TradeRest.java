@@ -1,4 +1,4 @@
-package com.sentinelcorp.trading;
+package com.sentinelcorp.trading.rest;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,23 +10,30 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.sentinelcorp.trading.TokenChecker;
 import com.sentinelcorp.trading.model.Account;
 import com.sentinelcorp.trading.model.Order;
 import com.sentinelcorp.trading.model.Position;
 import com.sentinelcorp.trading.model.Stock;
+import com.sentinelcorp.trading.model.Token;
 import com.sentinelcorp.trading.repository.AccountsRepository;
 import com.sentinelcorp.trading.repository.OrdersRepository;
 import com.sentinelcorp.trading.repository.PositionsRepository;
 
-@Controller
-public class TradeManagement {
+@RestController
+public class TradeRest {
 	private final static LocalTime NINE_THIRTY = LocalTime.of(9, 30);
 	private final static LocalTime FOUR_PM = LocalTime.of(16, 0);
 	private final static int MAX_API_CALLS = 60;
 	private final static String PENDING = "Pending...";
+	private final static String MARKET = "market";
+	private final static String LIMIT = "limit";
+	private final static String GTC = "gtc";
 	private final static String DONE = "Done!";
 	private final static String NO_FUNDS = "Insufficient funds.";
 	private final static String EXPIRED = "Order has Expired";
@@ -43,12 +50,40 @@ public class TradeManagement {
 	@Autowired
 	private PositionsRepository posRepo;
 
-	public TradeManagement() {
+	public TradeRest() {
 		this.lastReset = LocalDateTime.now();
 		this.apiCalls = 0;
 	}
 
-	public void marketOrder(Account account, String symbol, int numShares, boolean day) {
+	@GetMapping("trading/buyStock")
+	public boolean buyStock(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol,
+			@RequestParam(name = "orderType") String orderType, @RequestParam(name = "quantity") String quantity,
+			@RequestParam(name = "timeInForce") String timeInForce,
+			@RequestParam(name = "limitPrice", required = false) String limitPrice) {
+		boolean success = false;
+
+		Account account = TokenChecker.verifyToken(token);
+		if (account != null) {
+			int numShares = Integer.parseInt(quantity);
+
+			boolean day = true;
+			if (timeInForce.equals(GTC)) {
+				day = false;
+			}
+
+			if (orderType.equals(MARKET)) {
+				marketOrder(account.getId(), symbol, numShares, day);
+				success = true;
+			} else if (orderType.equals(LIMIT)) {
+				BigDecimal lp = new BigDecimal(limitPrice);
+				limitOrder(account.getId(), symbol, numShares, day, lp);
+			}
+		}
+
+		return success;
+	}
+
+	public void marketOrder(int accountId, String symbol, int numShares, boolean day) {
 		Order sixtysix = new Order();
 		sixtysix.setStatus(PENDING);
 		sixtysix.setFinish(false);
@@ -56,11 +91,11 @@ public class TradeManagement {
 		sixtysix.setNumShares(numShares);
 		sixtysix.setSymbol(symbol);
 		sixtysix.setPlaceTime(LocalDateTime.now());
-		sixtysix.setAccountId(account.getId());
+		sixtysix.setAccountId(accountId);
 		orderRepo.save(sixtysix);
 	}
 
-	public void limitOrder(Account account, String symbol, int numShares, boolean day, BigDecimal limit) {
+	public void limitOrder(int accountId, String symbol, int numShares, boolean day, BigDecimal limit) {
 		Order sixtysix = new Order();
 		sixtysix.setStatus(PENDING);
 		sixtysix.setFinish(false);
@@ -68,7 +103,7 @@ public class TradeManagement {
 		sixtysix.setNumShares(numShares);
 		sixtysix.setSymbol(symbol);
 		sixtysix.setPlaceTime(LocalDateTime.now());
-		sixtysix.setAccountId(account.getId());
+		sixtysix.setAccountId(accountId);
 		sixtysix.setLimitPrice(limit);
 		orderRepo.save(sixtysix);
 	}
@@ -79,10 +114,11 @@ public class TradeManagement {
 			List<Order> orderList = orderRepo.findAllByFinishFalse();
 			for (int i = 0; i < orderList.size(); i++) {
 				Order order = orderList.get(i);
-				BigDecimal price = BigDecimal.valueOf(getStock(order.getSymbol()).getC());
+				Account account = accRepo.findById(order.getAccountId()).get();
+				Token token = TokenChecker.getByAccountId(account.getId());
+				BigDecimal price = BigDecimal.valueOf(getStock(token.getToken(), order.getSymbol()).getC());
 				BigDecimal cost = price.multiply(BigDecimal.valueOf(order.getNumShares()));
 				cost = cost.add(COMMISSION);
-				Account account = accRepo.findById(order.getAccountId()).get();
 
 				if (!isNotBroke(account.getAmount(), cost)) {
 					order.setFinish(true);
@@ -95,19 +131,19 @@ public class TradeManagement {
 							order.setFinish(true);
 							order.setStatus(EXPIRED);
 							orderRepo.save(order);
-						} else if (order.getLimitPrice().compareTo(price) <= 0) {
-							fill(order, price, account, cost);
+						} else if (order.getLimitPrice().compareTo(price) >= 0) {
+							fill(order, price, token, cost);
 						}
 					} else {
 						// market order
-						fill(order, price, account, cost);
+						fill(order, price, token, cost);
 					}
 				}
 			}
 		}
 	}
 
-	public void fill(Order order, BigDecimal price, Account account, BigDecimal cost) {
+	public void fill(Order order, BigDecimal price, Token token, BigDecimal cost) {
 		Position position = posRepo.findByAccountIdAndSymbol(order.getAccountId(), order.getSymbol());
 		if (position != null) {
 			BigDecimal newQuan = BigDecimal.valueOf(order.getNumShares());
@@ -118,13 +154,13 @@ public class TradeManagement {
 			BigDecimal avgPrice = total.divide(newQuan.add(newQuan2), 4, RoundingMode.HALF_UP);
 			position.setPrice(avgPrice);
 			position.setQuantity(position.getQuantity() + order.getNumShares());
-			price = BigDecimal.valueOf(getStock(order.getSymbol()).getC());
+			price = BigDecimal.valueOf(getStock(token.getToken(), order.getSymbol()).getC());
 		} else {
 			position = new Position();
 			position.setPrice(price);
 			position.setQuantity(order.getNumShares());
 			position.setSymbol(order.getSymbol());
-			position.setAccountId(account.getId());
+			position.setAccountId(token.getAccount().getId());
 		}
 
 		posRepo.save(position);
@@ -136,8 +172,8 @@ public class TradeManagement {
 		order.setStatus(DONE);
 		orderRepo.save(order);
 
-		account.setAmount(account.getAmount().subtract(cost));
-		accRepo.save(account);
+		token.getAccount().setAmount(token.getAccount().getAmount().subtract(cost));
+		accRepo.save(token.getAccount());
 	}
 
 	private boolean isWeekday() {
@@ -156,7 +192,8 @@ public class TradeManagement {
 
 	// cidheh1r01qvscdan400cidheh1r01qvscdan40g
 	// "https://finnhub.io/api/v1/quote?symbol=AAPL&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g"
-	public Stock getStock(String symbol) {
+	@GetMapping("trading/getStock")
+	public Stock getStock(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol) {
 		Stock stock = null;
 		if (!timeout()) {
 			RestTemplate temp = new RestTemplate();

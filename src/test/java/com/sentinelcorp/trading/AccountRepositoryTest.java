@@ -25,5 +25,10 @@ public class AccountRepositoryTest {
 		System.out.println(repo.findAll());
 		Account account = repo.findByEmailIgnoreCase(email);
 		String password = "123456789";
+		for (Account a : repo.findAll()) {
+			System.out.println(a.getEmail());
+			System.out.println(a.getId());
+		}
+
 	}
 }

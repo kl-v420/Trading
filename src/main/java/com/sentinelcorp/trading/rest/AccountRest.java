@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sentinelcorp.trading.TokenChecker;
 import com.sentinelcorp.trading.model.Account;
+import com.sentinelcorp.trading.model.Order;
 import com.sentinelcorp.trading.repository.AccountsRepository;
+import com.sentinelcorp.trading.repository.OrdersRepository;
 
 @RestController
 public class AccountRest {
@@ -25,6 +27,8 @@ public class AccountRest {
 
 	@Autowired
 	private AccountsRepository accountsRepo;
+	@Autowired
+	private OrdersRepository ordersRepo;
 	@Autowired
 	private JavaMailSender emailSender;
 
@@ -86,6 +90,16 @@ public class AccountRest {
 		return success;
 	}
 
+	@GetMapping("trading/account/findAmount")
+	public String findAmount(@RequestParam(name = "token") String token) {
+		String success = "Not found";
+		Account account = TokenChecker.verifyToken(token);
+		if (account != null) {
+			success = account.getAmount().setScale(2).toString();
+		}
+		return success;
+	}
+
 	public void sendSimpleMessage(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(FROM);
@@ -108,10 +122,31 @@ public class AccountRest {
 		return DigestUtils.sha256Hex(s);
 	}
 
-	public void deposit(String email, BigDecimal depCount) {
-		Account account = accountsRepo.findByEmailIgnoreCase(email);
-		account.setAmount(depCount.add(account.getAmount()));
-		accountsRepo.save(account);
+	@GetMapping("trading/account/deposit")
+	public String deposit(@RequestParam(name = "token") String token, @RequestParam(name = "amount") String amount) {
+		String success = "Foundn't";
+		Account account = TokenChecker.verifyToken(token);
+		if (account != null) {
+			BigDecimal bd = new BigDecimal(amount);
+			account.setAmount(bd.add(account.getAmount()));
+			accountsRepo.save(account);
+			success = account.getAmount().setScale(2).toString();
+
+			Order order = new Order();
+			order.setAccountId(account.getId());
+			order.setCommission(BigDecimal.ZERO);
+			order.setDay(true);
+			order.setPlaceTime(LocalDateTime.now());
+			order.setFillTime(LocalDateTime.now());
+			order.setFinish(true);
+			order.setLimitPrice(null);
+			order.setNumShares(0);
+			order.setPrice(bd);
+			order.setStatus("Deposited");
+			order.setSymbol("CASH");
+			ordersRepo.save(order);
+		}
+		return success;
 	}
 
 	public Account findByEmail(String email) {
