@@ -207,6 +207,21 @@ public class TradeRest {
 		return stock;
 	}
 
+	// temp name
+	public Stock getStock2(@RequestParam(name = "symbol") String symbol) {
+		Stock stock = null;
+		if (!timeout()) {
+			RestTemplate temp = new RestTemplate();
+			StringBuilder url = new StringBuilder();
+			url.append("https://finnhub.io/api/v1/quote?symbol=");
+			url.append(symbol);
+			url.append("&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g");
+			stock = temp.getForObject(url.toString(), Stock.class);
+			apiCalls++;
+		}
+		return stock;
+	}
+
 	public boolean timeout() {
 		boolean timeout = false;
 
