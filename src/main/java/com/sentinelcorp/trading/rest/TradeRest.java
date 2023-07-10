@@ -20,7 +20,6 @@ import com.sentinelcorp.trading.model.Account;
 import com.sentinelcorp.trading.model.Order;
 import com.sentinelcorp.trading.model.Position;
 import com.sentinelcorp.trading.model.Stock;
-import com.sentinelcorp.trading.model.Token;
 import com.sentinelcorp.trading.repository.AccountsRepository;
 import com.sentinelcorp.trading.repository.OrdersRepository;
 import com.sentinelcorp.trading.repository.PositionsRepository;
@@ -116,8 +115,8 @@ public class TradeRest {
 			for (int i = 0; i < orderList.size(); i++) {
 				Order order = orderList.get(i);
 				Account account = accRepo.findById(order.getAccountId()).get();
-				Token token = TokenChecker.getByAccountId(account.getId());
-				BigDecimal price = BigDecimal.valueOf(getStock(token.getToken(), order.getSymbol()).getC());
+//				Token token = TokenChecker.getByAccountId(account.getId());
+				BigDecimal price = BigDecimal.valueOf(getStock(order.getSymbol()).getC());
 				BigDecimal cost = price.multiply(BigDecimal.valueOf(order.getNumShares()));
 				cost = cost.add(COMMISSION);
 
@@ -133,18 +132,18 @@ public class TradeRest {
 							order.setStatus(EXPIRED);
 							orderRepo.save(order);
 						} else if (order.getLimitPrice().compareTo(price) >= 0) {
-							fill(order, price, token, cost);
+							fill(order, price, account, cost);
 						}
 					} else {
 						// market order
-						fill(order, price, token, cost);
+						fill(order, price, account, cost);
 					}
 				}
 			}
 		}
 	}
 
-	public void fill(Order order, BigDecimal price, Token token, BigDecimal cost) {
+	public void fill(Order order, BigDecimal price, Account account, BigDecimal cost) {
 		Position position = posRepo.findByAccountIdAndSymbol(order.getAccountId(), order.getSymbol());
 		if (position != null) {
 			BigDecimal newQuan = BigDecimal.valueOf(order.getNumShares());
@@ -155,13 +154,13 @@ public class TradeRest {
 			BigDecimal avgPrice = total.divide(newQuan.add(newQuan2), 4, RoundingMode.HALF_UP);
 			position.setPrice(avgPrice);
 			position.setQuantity(position.getQuantity() + order.getNumShares());
-			price = BigDecimal.valueOf(getStock(token.getToken(), order.getSymbol()).getC());
+			price = BigDecimal.valueOf(getStock(order.getSymbol()).getC());
 		} else {
 			position = new Position();
 			position.setPrice(price);
 			position.setQuantity(order.getNumShares());
 			position.setSymbol(order.getSymbol());
-			position.setAccountId(token.getAccount().getId());
+			position.setAccountId(account.getId());
 		}
 
 		posRepo.save(position);
@@ -173,8 +172,8 @@ public class TradeRest {
 		order.setStatus(DONE);
 		orderRepo.save(order);
 
-		token.getAccount().setAmount(token.getAccount().getAmount().subtract(cost));
-		accRepo.save(token.getAccount());
+		account.setAmount(account.getAmount().subtract(cost));
+		accRepo.save(account);
 	}
 
 	private boolean isWeekday() {
@@ -194,7 +193,7 @@ public class TradeRest {
 	// cidheh1r01qvscdan400cidheh1r01qvscdan40g
 	// "https://finnhub.io/api/v1/quote?symbol=AAPL&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g"
 	@GetMapping("trading/getStock")
-	public Stock getStock(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol) {
+	public Stock getStock(@RequestParam(name = "symbol") String symbol) {
 		Stock stock = null;
 		if (!timeout()) {
 			RestTemplate temp = new RestTemplate();

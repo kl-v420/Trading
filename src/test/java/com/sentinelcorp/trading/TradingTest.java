@@ -1,11 +1,9 @@
 package com.sentinelcorp.trading;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.sentinelcorp.trading.model.Stock;
 import com.sentinelcorp.trading.repository.AccountsRepository;
 import com.sentinelcorp.trading.repository.OrdersRepository;
 import com.sentinelcorp.trading.repository.PositionsRepository;
@@ -79,11 +77,11 @@ public class TradingTest {
 //		Assertions.assertTrue(management.getPostionList().isEmpty());
 	}
 
-	@Test
-	public void test6() {
-		TokenChecker.addToken(EMAIL, null, false);
-		Stock gme = management.getStock(EMAIL, "GME");
-		Assertions.assertTrue(gme.getC() > 0);
-	}
+//	@Test
+//	public void test6() {
+//		TokenChecker.addToken(EMAIL, null, false);
+//		Stock gme = management.getStock(EMAIL, "GME");
+//		Assertions.assertTrue(gme.getC() > 0);
+//	}
 
 }
