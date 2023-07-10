@@ -77,6 +77,7 @@ public class TradeRest {
 			} else if (orderType.equals(LIMIT)) {
 				BigDecimal lp = new BigDecimal(limitPrice);
 				limitOrder(account.getId(), symbol, numShares, day, lp);
+				success = true;
 			}
 		}
 
