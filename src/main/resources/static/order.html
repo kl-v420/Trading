@@ -12,7 +12,7 @@ $(document).ready(function(){
 		window.location.href = "login.html";
 	} else {
 	    	$.get("trading/order/getAll?token=" + token, function(data) {
-				if(data.length > 0){
+				if(data.length == 64){
 					var table = '<table>';
 				    table+='<th>symbol</th>';
 				    table+='<th>limitPrice</th>';

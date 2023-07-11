@@ -126,7 +126,7 @@ public class TradeRest {
 				} else {
 					if (order.getLimitPrice() != null) {
 						LocalDateTime close = LocalDateTime.of(order.getPlaceTime().toLocalDate(), FOUR_PM);
-						if (LocalDateTime.now().isAfter(close)) {
+						if (order.getPlaceTime().isAfter(close)) {
 							close = LocalDateTime.of(order.getPlaceTime().toLocalDate().plusDays(1), FOUR_PM);
 						}
 
