@@ -125,7 +125,11 @@ public class TradeRest {
 					orderRepo.save(order);
 				} else {
 					if (order.getLimitPrice() != null) {
-						LocalDateTime close = LocalDateTime.of(order.getPlaceTime().toLocalDate().plusDays(1), FOUR_PM);
+						LocalDateTime close = LocalDateTime.of(order.getPlaceTime().toLocalDate(), FOUR_PM);
+						if (LocalDateTime.now().isAfter(close)) {
+							close = LocalDateTime.of(order.getPlaceTime().toLocalDate().plusDays(1), FOUR_PM);
+						}
+
 						if (order.isDay() && order.getPlaceTime().isAfter(close)) {
 							order.setFinish(true);
 							order.setStatus(EXPIRED);
