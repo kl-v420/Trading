@@ -11,7 +11,7 @@
 				$.get("trading/account/login?" + $("#loginForm").serialize(), function (data) {
 					console.log("Token: " + data);
 					
-					if(data.length > 0){
+					if(data.length == 64){
 						Cookies.set('token', data)
 						window.location.href = "portfolio.html";
 					}else{
