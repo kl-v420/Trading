@@ -23,7 +23,7 @@ import com.sentinelcorp.trading.repository.OrdersRepository;
 public class AccountRest {
 	private static final String FROM = "admin@hub1616.com";
 	private static final String SUBJECT = "o1616 Password Recovery";
-	private static final String LINK = "http://hub1616.com/passwordChange.html?token=";
+	private static final String LINK = "https://hub1616.com/passwordChange.html?token=";
 
 	@Autowired
 	private AccountsRepository accountsRepo;
