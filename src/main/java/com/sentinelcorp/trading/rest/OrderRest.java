@@ -20,6 +20,11 @@ public class OrderRest {
 	@GetMapping("trading/order/getAll")
 	public List<Order> getAll(@RequestParam(name = "token") String token) {
 		Account account = TokenChecker.verifyToken(token);
-		return ordersRepo.findAllByAccountId(account.getId());
+		List<Order> c = null;
+		if (account != null) {
+			return ordersRepo.findAllByAccountId(account.getId());
+		}
+		return c;
 	}
+
 }

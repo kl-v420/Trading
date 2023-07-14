@@ -19,7 +19,12 @@ public class PositionRest {
 
 	@GetMapping("trading/position/getAll")
 	public List<Position> getAll(@RequestParam(name = "token") String token) {
+		List<Position> p = null;
 		Account account = TokenChecker.verifyToken(token);
-		return positionsRepo.findAllByAccountId(account.getId());
+		if (account != null) {
+			return positionsRepo.findAllByAccountId(account.getId());
+		}
+		return p;
 	}
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ public class AccountRest {
 	private static final String FROM = "admin@hub1616.com";
 	private static final String SUBJECT = "o1616 Password Recovery";
 	private static final String LINK = "https://hub1616.com/passwordChange.html?token=";
+	private static final String NOT_FOUND = "Not Found";
+	private String from;
 
 	@Autowired
 	private AccountsRepository accountsRepo;
@@ -92,17 +95,18 @@ public class AccountRest {
 
 	@GetMapping("trading/account/findAmount")
 	public String findAmount(@RequestParam(name = "token") String token) {
-		String success = "Not found";
 		Account account = TokenChecker.verifyToken(token);
 		if (account != null) {
-			success = account.getAmount().setScale(2).toString();
+			return account.getAmount().setScale(2).toString();
 		}
-		return success;
+		return NOT_FOUND;
 	}
 
+	@Value("${spring.mail.username}")
 	public void sendSimpleMessage(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom(FROM);
+
+		message.setFrom(from);
 		message.setTo(to);
 		message.setSubject(subject);
 		message.setText(text);

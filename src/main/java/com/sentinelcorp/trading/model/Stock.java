@@ -1,5 +1,8 @@
 package com.sentinelcorp.trading.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Stock {
 	private double c;
 	private double d;
@@ -11,16 +14,14 @@ public class Stock {
 
 	@Override
 	public String toString() {
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(getC());
-		sb.append(' ');
-		sb.append(getH());
-		sb.append(' ');
-		sb.append(getL());
-		sb.append(' ');
-		sb.append(getD());
-		return sb.toString();
+		ObjectMapper mapper = new ObjectMapper();
+		String s = null;
+		try {
+			s = mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return s;
 	}
 
 	public double getC() {

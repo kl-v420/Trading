@@ -3,6 +3,9 @@ package com.sentinelcorp.trading.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,28 +31,14 @@ public class Order {
 	private String status;
 
 	public String toString() {
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(getAccountId());
-		sb.append(' ');
-		sb.append(getSymbol());
-		sb.append(' ');
-		sb.append(getLimitPrice());
-		sb.append(' ');
-		sb.append(getNumShares());
-		sb.append(' ');
-		sb.append(getPlaceTime());
-		sb.append(' ');
-		sb.append(getId());
-		sb.append(' ');
-		sb.append(isDay());
-		sb.append(' ');
-		sb.append(getPrice());
-		sb.append(' ');
-		sb.append(getFillTime());
-		sb.append(' ');
-		sb.append(getStatus());
-		return sb.toString();
+		ObjectMapper mapper = new ObjectMapper();
+		String s = null;
+		try {
+			s = mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return s;
 	}
 
 	public BigDecimal getPrice() {

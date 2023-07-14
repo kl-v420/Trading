@@ -2,11 +2,25 @@ package com.sentinelcorp.trading.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Token {
 	private LocalDateTime expire;
 	private Account account;
 	private String token;
 	private boolean login;
+
+	public String toString() {
+		ObjectMapper mapper = new ObjectMapper();
+		String s = null;
+		try {
+			s = mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
 
 	public boolean isLogin() {
 		return login;

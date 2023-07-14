@@ -2,6 +2,9 @@ package com.sentinelcorp.trading.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,18 +24,14 @@ public class Position {
 	private int accountId;
 
 	public String toString() {
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(getAccountId());
-		sb.append(' ');
-		sb.append(getSymbol());
-		sb.append(' ');
-		sb.append(getPrice());
-		sb.append(' ');
-		sb.append(getQuantity());
-		sb.append(' ');
-		sb.append(getId());
-		return sb.toString();
+		ObjectMapper mapper = new ObjectMapper();
+		String s = null;
+		try {
+			s = mapper.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return s;
 	}
 
 	public int getId() {
