@@ -37,6 +37,8 @@ public class TradeRest {
 	private final static String NO_FUNDS = "Insufficient funds.";
 	private final static String EXPIRED = "Order has Expired";
 	private final static BigDecimal COMMISSION = BigDecimal.valueOf(4.95);
+	private final static String FIN_HUB = "https://finnhub.io/api/v1/quote?symbol=";
+	private final static String FIN_HUB2 = "&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g";
 	private int apiCalls;
 	private LocalDateTime lastReset;
 
@@ -208,14 +210,13 @@ public class TradeRest {
 		Stock stock = null;
 		RestTemplate temp = new RestTemplate();
 		StringBuilder url = new StringBuilder();
-		String i = "https://finnhub.io/api/v1/quote?symbol=";
-		String i2 = "&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g";
+
 		if (!timeout()) {
-			url.append(i);
+			url.append(FIN_HUB);
 			url.append(symbol);
-			url.append(i2);
+			url.append(FIN_HUB2);
 			apiCalls++;
-			return temp.getForObject(url.toString(), Stock.class);
+			stock = temp.getForObject(url.toString(), Stock.class);
 		}
 		return stock;
 	}
