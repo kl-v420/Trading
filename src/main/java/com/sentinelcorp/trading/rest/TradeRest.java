@@ -210,7 +210,6 @@ public class TradeRest {
 		StringBuilder url = new StringBuilder();
 		String i = "https://finnhub.io/api/v1/quote?symbol=";
 		String i2 = "&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g";
-
 		if (!timeout()) {
 			url.append(i);
 			url.append(symbol);
