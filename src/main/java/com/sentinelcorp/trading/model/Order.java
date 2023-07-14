@@ -30,6 +30,7 @@ public class Order {
 	private boolean finish;
 	private String status;
 
+	@Override
 	public String toString() {
 		ObjectMapper mapper = new ObjectMapper();
 		String s = null;

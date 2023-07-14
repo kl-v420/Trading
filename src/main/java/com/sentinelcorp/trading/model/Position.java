@@ -23,6 +23,7 @@ public class Position {
 	private int quantity;
 	private int accountId;
 
+	@Override
 	public String toString() {
 		ObjectMapper mapper = new ObjectMapper();
 		String s = null;

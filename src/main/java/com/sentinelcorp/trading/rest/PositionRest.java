@@ -22,9 +22,9 @@ public class PositionRest {
 		List<Position> p = null;
 		Account account = TokenChecker.verifyToken(token);
 		if (account != null) {
-			return positionsRepo.findAllByAccountId(account.getId());
+			p = positionsRepo.findAllByAccountId(account.getId());
 		}
 		return p;
 	}
-
+	
 }

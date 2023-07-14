@@ -11,6 +11,7 @@ public class Token {
 	private String token;
 	private boolean login;
 
+	@Override
 	public String toString() {
 		ObjectMapper mapper = new ObjectMapper();
 		String s = null;

@@ -197,7 +197,6 @@ public class TradeRest {
 	// "https://finnhub.io/api/v1/quote?symbol=AAPL&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g"
 	@GetMapping("trading/getStock")
 	public Stock getStock(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol) {
-
 		Stock stock = null;
 		if (TokenChecker.verifyToken(token) != null) {
 			stock = getStock(symbol);
@@ -207,14 +206,17 @@ public class TradeRest {
 
 	public Stock getStock(String symbol) {
 		Stock stock = null;
+		RestTemplate temp = new RestTemplate();
+		StringBuilder url = new StringBuilder();
+		String i = "https://finnhub.io/api/v1/quote?symbol=";
+		String i2 = "&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g";
+
 		if (!timeout()) {
-			RestTemplate temp = new RestTemplate();
-			StringBuilder url = new StringBuilder();
-			url.append("https://finnhub.io/api/v1/quote?symbol=");
+			url.append(i);
 			url.append(symbol);
-			url.append("&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g");
-			stock = temp.getForObject(url.toString(), Stock.class);
+			url.append(i2);
 			apiCalls++;
+			return temp.getForObject(url.toString(), Stock.class);
 		}
 		return stock;
 	}

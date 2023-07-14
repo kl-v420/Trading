@@ -30,6 +30,7 @@ public class Account {
 		this.amount = amount;
 	}
 
+	@Override
 	public String toString() {
 		ObjectMapper mapper = new ObjectMapper();
 		String s = null;

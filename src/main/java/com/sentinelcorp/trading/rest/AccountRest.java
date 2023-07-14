@@ -22,10 +22,10 @@ import com.sentinelcorp.trading.repository.OrdersRepository;
 
 @RestController
 public class AccountRest {
-	private static final String FROM = "admin@hub1616.com";
 	private static final String SUBJECT = "o1616 Password Recovery";
 	private static final String LINK = "https://hub1616.com/passwordChange.html?token=";
 	private static final String NOT_FOUND = "Not Found";
+	@Value("${spring.mail.username}")
 	private String from;
 
 	@Autowired
@@ -102,10 +102,8 @@ public class AccountRest {
 		return NOT_FOUND;
 	}
 
-	@Value("${spring.mail.username}")
 	public void sendSimpleMessage(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
-
 		message.setFrom(from);
 		message.setTo(to);
 		message.setSubject(subject);
@@ -128,14 +126,12 @@ public class AccountRest {
 
 	@GetMapping("trading/account/deposit")
 	public String deposit(@RequestParam(name = "token") String token, @RequestParam(name = "amount") String amount) {
-		String success = "Foundn't";
+
 		Account account = TokenChecker.verifyToken(token);
 		if (account != null) {
 			BigDecimal bd = new BigDecimal(amount);
 			account.setAmount(bd.add(account.getAmount()));
 			accountsRepo.save(account);
-			success = account.getAmount().setScale(2).toString();
-
 			Order order = new Order();
 			order.setAccountId(account.getId());
 			order.setCommission(BigDecimal.ZERO);
@@ -149,8 +145,9 @@ public class AccountRest {
 			order.setStatus("Deposited");
 			order.setSymbol("CASH");
 			ordersRepo.save(order);
+			return account.getAmount().setScale(2).toString();
 		}
-		return success;
+		return null;
 	}
 
 	public Account findByEmail(String email) {
