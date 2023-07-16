@@ -95,11 +95,12 @@ public class AccountRest {
 
 	@GetMapping("trading/account/findAmount")
 	public String findAmount(@RequestParam(name = "token") String token) {
+		String s = NOT_FOUND;
 		Account account = TokenChecker.verifyToken(token);
 		if (account != null) {
-			return account.getAmount().setScale(2).toString();
+			s = account.getAmount().setScale(2).toString();
 		}
-		return NOT_FOUND;
+		return s;
 	}
 
 	public void sendSimpleMessage(String to, String subject, String text) {
@@ -126,7 +127,7 @@ public class AccountRest {
 
 	@GetMapping("trading/account/deposit")
 	public String deposit(@RequestParam(name = "token") String token, @RequestParam(name = "amount") String amount) {
-
+		String success = null;
 		Account account = TokenChecker.verifyToken(token);
 		if (account != null) {
 			BigDecimal bd = new BigDecimal(amount);
@@ -145,9 +146,9 @@ public class AccountRest {
 			order.setStatus("Deposited");
 			order.setSymbol("CASH");
 			ordersRepo.save(order);
-			return account.getAmount().setScale(2).toString();
+			success = account.getAmount().setScale(2).toString();
 		}
-		return null;
+		return success;
 	}
 
 	public Account findByEmail(String email) {
