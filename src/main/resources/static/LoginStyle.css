@@ -4,7 +4,7 @@
 
 
 .bar {
-  background-color: rgb(255,170,10);
+  background-color: rgb(0,42,119);
   width: 100%;
   height: 45px;
   display: flex;
@@ -15,7 +15,7 @@
 .bar li {
   height: 100%;
   width: 130px;
-  border-right: 0px solid rgb(235, 177, 69);
+  border-right: 0px solid rgb(0,0,0);
 }
 
 .bar li a {
@@ -33,16 +33,16 @@ padding: 12px 0;
 }
 
 .bar li a:hover {
-  background-color: rgb(235, 177, 69);
+  background-color: rgb(0, 140, 200);
 }
 
 .bar li a.active {
-  background-color: rgb(165, 113, 16);
+  background-color: rgb(9, 129, 209);
   color: white;
 }
 
 .dropdown {
-  background-color: rgb(245, 193, 97);
+  background-color: rgb(9, 129, 209);
   padding: 0;
   list-style: none;
   display: none;
