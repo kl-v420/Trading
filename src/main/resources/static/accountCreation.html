@@ -1,8 +1,53 @@
 <html> 
-	<head> 
+	<head>
+	<link rel="stylesheet" href="LoginStyle.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<title>1616 Trading - Account Creator</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<style>
+	body, html {
+	  height: 100%;
+	  margin: 0;
+	}
+
+	.bgimg-1, .bgimg-2, .bgimg-3 {
+	  position: relative;
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+
+	}
+	.bgimg-1 {
+	  background-image: url('https://wallpapercave.com/wp/wp2939993.jpg');
+	  height: 100%;
+	}
+
+	.caption {
+	  position: absolute;
+	  left: 0;
+	  top: 50%;
+	  width: 100%;
+	  text-align: center;
+	  color: #000;
+	}
+	.caption span.border {
+	  background-color: #111;
+	  color: #fff;
+	  padding: 18px;
+	  font-size: 25px;
+	  letter-spacing: 10px;
+	}
+	h3 {
+	  letter-spacing: 5px;
+	  text-transform: uppercase;
+	  font: 20px "Lato", sans-serif;
+	  color: #111;
+	}
+	</style>
 	<script>
+	
+	
+	
 	$(document).ready(function(){
 		$("#submit").click(function(){
 			if($("#name").val().length == 0) {
@@ -30,6 +75,29 @@
 	</head>
 	
 	<body>
+	<div class="bgimg-1">
+	
+<div class="container">
+  <nav>
+  <ul class="bar">
+  
+    <li><a href="index2.html" class="has-dropdown">Home</a></li>
+    <li class="has-dropdown">
+      <a href="login.html">Login</a>
+    </li>
+<li><a href="accountCreation.html" class="active">Create an Account</a></li>
+    <li class="has-dropdown">
+      <a href="#">About</a>
+      <ul class="dropdown">
+        <li><a href="#">This Site</a></li>
+        <li><a href="#"></a></li>
+      </ul>
+       </ul>
+  </nav>
+</div>
+
+
+	
 		<center>
 			Please Enter Your Preferred Email, Name, and Password 
 			<br/>
@@ -48,6 +116,8 @@
 		<a href="login.html">Back to Login</a>
 		<br/>
 		</center>
+		  </div>
+		
 		
 	</body>
 
