@@ -1,6 +1,8 @@
 <html>
-<head>
 <title>1616 Trading - Portfolio</title>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<link rel="stylesheet" href="PortfolioStyle.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 <script>
@@ -40,22 +42,75 @@
 		}
 	});
 </script>
-</head>
+<style>
+	body, html {
+	  height: 100%;
+	  margin: 0;
+	}
 
+	.bgimg-1, .bgimg-2, .bgimg-3 {
+	  position: relative;
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+
+	}
+	.bgimg-1 {
+	  background-image: url('https://img.freepik.com/premium-photo/stock-market-forex-trading-graph-graphic-double-exposure_73426-193.jpg');
+	  height: 100%;
+	}
+
+	.caption {
+	  position: absolute;
+	  left: 0;
+	  top: 50%;
+	  width: 100%;
+	  text-align: center;
+	  color: #000;
+	}
+	.caption span.border {
+	  background-color: #111;
+	  color: #fff;
+	  padding: 18px;
+	  font-size: 25px;
+	  letter-spacing: 10px;
+	}
+	h3 {
+	  letter-spacing: 5px;
+	  text-transform: uppercase;
+	  font: 20px "Lato", sans-serif;
+	  color: #111;
+	}
+	</style>
+</head>
 <body>
+<div class="bgimg-1">
+<div class="container">
+  <nav>
+  <ul class="bar">
+    <li><a href="portfolio.html" class="active">Your Portfolio</a></li>
+        <li class="has-dropdown">
+      <a href="order.html">My Orders</a>
+    </li>
+    <li class="has-dropdown">
+      <a href="deposit.html">Deposit Money</a>
+    </li>
+    <li class="has-dropdown">
+      <a href="trades.html">Get Stocks</a>
+          </li>
+    <li class="has-dropdown">
+      <a href="logout.html">Logout</a>
+      <ul class="dropdown">
+      </ul>
+       </ul>
+  </nav>
+</div>
 	<center>
+	<h1>My Stocks</h1>
 		<div id="ptable">You don't have any positions</div>
 		<br /> 
 		 <div id = "amount">Total Funds</div>
-		 <br /> <a href="order.html">My Most Recent Orders</a>
-		 <br />
-		 <a href="deposit.html">Deposit Money Here</a>		 
-		 <br />
-		 <a href="trades.html">Get more Stocks Here</a>
-		 <br />		 
-		 <a href="logout.html">Logout?</a>
-		 
-		 
 	</center>
+	</div>
 </body>
 </html>
