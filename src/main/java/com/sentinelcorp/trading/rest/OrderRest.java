@@ -22,7 +22,7 @@ public class OrderRest {
 		Account account = TokenChecker.verifyToken(token);
 		List<Order> c = null;
 		if (account != null) {
-			c =  ordersRepo.findAllByAccountId(account.getId());
+			c = ordersRepo.findAllByAccountId(account.getId());
 		}
 		return c;
 	}

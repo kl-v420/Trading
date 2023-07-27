@@ -1,11 +1,12 @@
 <html> 
 	<head> 
 	<title>1616 Trading - Trades</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<link rel="stylesheet" href="PortfolioStyle.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 <style type="text/css">
   ul { list-style: none; margin: 0; padding: 0; }
-  li { margin: .2em 0; }
   
   fieldset {
     border: none;
@@ -98,10 +99,70 @@
 		}
 	});
 </script>
+<style>
+	body, html {
+	  height: 100%;
+	  margin: 0;
+	}
+
+	.bgimg-1, .bgimg-2, .bgimg-3 {
+	  position: relative;
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+
+	}
+	.bgimg-1 {
+	  background-image: url('https://img.freepik.com/premium-photo/stock-market-forex-trading-graph-graphic-double-exposure_73426-193.jpg');
+	  height: 100%;
+	}
+
+	.caption {
+	  position: absolute;
+	  left: 0;
+	  top: 50%;
+	  width: 100%;
+	  text-align: center;
+	  color: #000;
+	}
+	.caption span.border {
+	  background-color: #111;
+	  color: #fff;
+	  padding: 18px;
+	  font-size: 25px;
+	  letter-spacing: 10px;
+	}
+	h3 {
+	  letter-spacing: 5px;
+	  text-transform: uppercase;
+	  font: 20px "Lato", sans-serif;
+	  color: #111;
+	}
+	</style>
 	</head>
-	
-	
 	<body>
+	<div class="bgimg-1">
+<div class="container">
+  <nav>
+  <ul class="bar">
+      <li class="has-dropdown">
+      <a href="trades.html">My Portfoilo</a>
+          </li>
+        <li class="has-dropdown">
+      <a href="order.html">My Orders</a>
+    </li>
+    <li class="has-dropdown">
+      <a href="deposit.html">Deposit Money</a>
+    </li>
+    <li><a href="trades.html" class="active">Get Stocks</a></li>
+    <li class="has-dropdown">
+      <a href="logout.html">Logout</a>
+      <ul class="dropdown">
+      </ul>
+       </ul>
+  </nav>
+</div>
+	
 		<center>
 			Trading Form
 			<form id = "tradeForm">
@@ -113,10 +174,8 @@
 		<div id = "stockPrice"></div>
 		<div id = "form2"></div>
 		<div id = "status"></div>
-		<br/>
-		<a href="portfolio.html">Go Back</a>
 		</center>
-		
+	</div>
 	</body>
 
 </html>
