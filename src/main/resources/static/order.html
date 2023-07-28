@@ -15,6 +15,11 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script src="vendor/bootstrap/js/popper.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css%22%3E" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css"  />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.css" integrity="sha512-phGxLIsvHFArdI7IyLjv14dchvbVkEDaH95efvAae/y2exeWBQCQDpNFbOTdV1p4/pIa/XtbuDCnfhDEIXhvGQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/perfect-scrollbar/1.5.5/css/perfect-scrollbar.min.css" integrity="sha512-ygIxOy3hmN2fzGeNqys7ymuBgwSCet0LVfqQbWY10AszPMn2rB9JY0eoG0m1pySicu+nvORrBmhHVSt7+GI9VA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<script>
 $(document).ready(function(){
@@ -25,20 +30,21 @@ $(document).ready(function(){
 	} else {
 	    	$.get("trading/order/getAll?token=" + token, function(data) {
 				if(data.length > 0){
-					var table = '<table>';
-					<table>
-					<thead>
-					<tr class="row100 head">
-					<th class="cell100 column2">Position</th>
-					<th class="cell100 column3">Start date</th>
-					<th class="cell100 column4">Last Activity</th>
-					<th class="cell100 column5">Contacts</th>
-					<th class="cell100 column6">Age</th>
-					<th class="cell100 column7">Address</th>
-					<th class="cell100 column8">Card No</th>
-					</tr>
-					</thead>
-					<tbody>
+					
+					var table = <table>;
+					table += '<table>'
+					table += '<thead>'
+					table += '<tr class="row100 head">'
+					table += '<th class="cell100 column2">Position</th>'
+					table += '<th class="cell100 column3">Start date</th>'
+					table += '<th class="cell100 column4">Last Activity</th>'
+					table += '<th class="cell100 column5">Contacts</th>'
+					table += '<th class="cell100 column6">Age</th>'
+					table += '<th class="cell100 column7">Address</th>'
+					table += '<th class="cell100 column8">Card No</th>'
+					table += '</tr>'
+					table += '</thead>'
+					table += '<tbody>'
 					<tr class="row100 body">
 					for (var i = 0; i < data.length; i++) {
 	                    table += '<tr class="row100 body">';
@@ -73,12 +79,13 @@ $(document).ready(function(){
 //					table += '</table>';
 		
 					$("#ptable").html(table);
-		//		}
+					table += '</tbody>'
+					table += '</table>'
+				}
 			});
     	}
 	});
-	</tbody>
-	</table>
+
 </script>
 
 <style>
