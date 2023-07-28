@@ -3,6 +3,7 @@ package com.sentinelcorp.trading;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sentinelcorp.trading.model.Account;
@@ -21,7 +22,7 @@ public class TokenChecker {
 	}
 
 	public static void deleteToken() {
-		ArrayList<String> del = new ArrayList<String>();
+		List<String> del = new ArrayList<String>();
 		for (String key : TOKEN_MAP.keySet()) {
 			Token coin = TOKEN_MAP.get(key);
 			if (LocalDateTime.now().isAfter(coin.getExpire())) {

@@ -18,29 +18,35 @@ $(document).ready(function(){
 	    	$.get("trading/order/getAll?token=" + token, function(data) {
 				if(data.length > 0){
 					var table = '<table>';
-				    table+='<th>symbol</th>';
-				    table+='<th>limitPrice</th>';
-				    table+='<th>commission</th>';
-				    table+='<th>numShares</th>';
-				    table+='<th>finish</th>';
-				    table+='<th>day</th>';
-				    table+='<th>fillTime</th>';
-				    table+='<th>status</th>';
-				    table+='<th>price</th>';
-					table += '</tr>';
 					for (var i = 0; i < data.length; i++) {
-						table += '<tr>';
-						table += '<td>' + data[i].symbol + '</td>';
-						table += '<td>' + data[i].limitPrice + '</td>';
-						table += '<td>' + data[i].commission + '</td>';
-						table +='<td>' + data[i].numShares + '</td>';
-						table +='<td>' + data[i].finish + '</td>';
-						table +='<td>'+ data[i].day +  '</td>';					
-						table +='<td>' + data[i].fillTime + '</td>';
-						table +='<td>' + data[i].status + '</td>';
-						table +='<td>'+ data[i].price + '</td>';
-						table += '</tr>';
-					}
+	                    table += '<tr class="row100 body">';
+	                    table += '<<td class="cell100 column2">>' + data[i].symbol + '</td>';
+	                    table += '<<td class="cell100 column3">>' + data[i].quantity + '</td>';
+	                    table += '<<td class="cell100 column4">>' + data[i].price + '</td>';
+	                    table += '<<td class="cell100 column5">>' + data[i].numShares + '</td>';
+	                    table += '<<td class="cell100 column6">>' + data[i].filltime + '</td>';
+	                    table += '<<td class="cell100 column7">>' + data[i].status + '</td>';
+	                    table += '<<td class="cell100 column8">>' + data[i].commission + '</td>';
+	                    table += '<<td class="cell100 column9">>' + data[i].finish + '</td>';
+	                    table += '</tr>';
+	                }
+					
+//table+='<th>limitPrice</th>';
+//table+='<th>day</th>';
+
+//					for (var i = 0; i < data.length; i++) {
+//						table += '<tr>';
+//						table += '<td>' + data[i].symbol + '</td>';
+//						table += '<td>' + data[i].limitPrice + '</td>';
+	//					table += '<td>' + data[i].commission + '</td>';
+	//					table +='<td>' + data[i].numShares + '</td>';
+	//					table +='<td>' + data[i].finish + '</td>';
+		//				table +='<td>'+ data[i].day +  '</td>';					
+	//					table +='<td>' + data[i].fillTime + '</td>';
+	//					table +='<td>' + data[i].status + '</td>';
+		//				table +='<td>'+ data[i].price + '</td>';
+//						table += '</tr>';
+			//		}
 		
 					table += '</table>';
 		
@@ -123,7 +129,11 @@ $(document).ready(function(){
        </ul>
   </nav>
 </div>
-	
+	<div class="limiter">
+<div class="container-table100">
+<div class="wrap-table100">
+<div class="table100 ver1">
+<div class="table100-firstcol">
 	
 		<center>
 				My Orders
@@ -131,14 +141,11 @@ $(document).ready(function(){
 		Please refresh the page to see the latest updates to your orders
 		</br>
 		<div class="limiter">
-<div class="container-table100">
-<div class="wrap-table100">
-<div class="table100 ver1">
-<div class="table100-firstcol">
-				<div id="ptable"></div>	
-</div></div></div></div></div>		
-				
+				<div id="ptable">
+				</div>		
+			</div>	
 		</center>
+		</div></div></div></div></div>
 		</div>
 	</body>
 </html>
