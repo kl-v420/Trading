@@ -31,13 +31,13 @@ $(document).ready(function(){
 	    	$.get("trading/order/getAll?token=" + token, function(data) {
 				if(data.length > 0){
 					<div class="limiter">
-					<div class="container-table100">
-					<div class="wrap-table100">
-					<div class="table100 ver1">
-					<div class="table100-firstcol">
 					var table = '<div class="limiter>';
-					table += '<table>'
-					table += '<thead>'
+					table += <div class="container-table100">;
+					table += <div class="wrap-table100">;
+					table += <div class="table100 ver1">;
+					table += <div class="table100-firstcol">;
+					table += '<table>';
+					table += '<thead>';
 					table += '<tr class="row100 head">'
 					table += '<th class="cell100 column2">Position</th>';
 					table += '<th class="cell100 column3">Start date</th>';
@@ -85,10 +85,11 @@ $(document).ready(function(){
 					$("#ptable").html(table);
 					table += '</tbody>'
 					table += '</table>'
-					</div>
-					</div>
-					</div>
-					</div>
+					table += '</div>'
+					table += '</div>'
+					table += '</div>'
+					table += '</div>'
+					table += '</div>'
 					</div>
 			});
     	}
