@@ -32,7 +32,7 @@ public class Order {
 
 	@Override
 	public String toString() {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
 		String s = null;
 		try {
 			s = mapper.writeValueAsString(this);
