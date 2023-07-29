@@ -29,7 +29,6 @@ $(document).ready(function(){
 	} else {
 	    	$.get("trading/order/getAll?token=" + token, function(data) {
 				if(data.length > 0){
-					<div class="limiter">
 					var table = '<div class="limiter>';
 					table += '<div class="container-table100">';
 					table += '<div class="wrap-table100">';
@@ -37,7 +36,6 @@ $(document).ready(function(){
 					table += '<div class="table100-firstcol">';
 					table += '<table>';
 					table += '<thead>';
-					table += '<tr class="row100 head">'
 					table += '<th class="cell100 column2">Position</th>';
 					table += '<th class="cell100 column3">Start date</th>';
 					table += '<th class="cell100 column4">Last Activity</th>';
@@ -45,10 +43,9 @@ $(document).ready(function(){
 					table += '<th class="cell100 column6">Age</th>';
 					table += '<th class="cell100 column7">Address</th>';
 					table += '<th class="cell100 column8">Card No</th>';
-					table += '</tr>'
-					table += '</thead>'
-					table += '<tbody>'
-					<tr class="row100 body">
+					table += '</tr>';
+					table += '</thead>';
+					table += '<tbody>';
 					for (var i = 0; i < data.length; i++) {
 	                    table += '<tr class="row100 body">';
 	                    table += '<td class="cell100 column2">' + data[i].symbol + '</td>';
@@ -61,27 +58,6 @@ $(document).ready(function(){
 	                    table += '<td class="cell100 column9">' + data[i].finish + '</td>';
 	                    table += '</tr>';
 	                }
-					
-//table+='<th>limitPrice</th>';
-//table+='<th>day</th>';
-
-//					for (var i = 0; i < data.length; i++) {
-//						table += '<tr>';
-//						table += '<td>' + data[i].symbol + '</td>';
-//						table += '<td>' + data[i].limitPrice + '</td>';
-	//					table += '<td>' + data[i].commission + '</td>';
-	//					table +='<td>' + data[i].numShares + '</td>';
-	//					table +='<td>' + data[i].finish + '</td>';
-		//				table +='<td>'+ data[i].day +  '</td>';					
-	//					table +='<td>' + data[i].fillTime + '</td>';
-	//					table +='<td>' + data[i].status + '</td>';
-		//				table +='<td>'+ data[i].price + '</td>';
-//						table += '</tr>';
-			//		}
-		
-//					table += '</table>';
-		
-				}
 					table += '</tbody>';
 					table += '</table>';
 					table += '</div>';
