@@ -19,7 +19,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.css" integrity="sha512-phGxLIsvHFArdI7IyLjv14dchvbVkEDaH95efvAae/y2exeWBQCQDpNFbOTdV1p4/pIa/XtbuDCnfhDEIXhvGQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/perfect-scrollbar/1.5.5/css/perfect-scrollbar.min.css" integrity="sha512-ygIxOy3hmN2fzGeNqys7ymuBgwSCet0LVfqQbWY10AszPMn2rB9JY0eoG0m1pySicu+nvORrBmhHVSt7+GI9VA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 	<script>
 $(document).ready(function(){
 	var token = Cookies.get("token"); 
@@ -37,22 +36,23 @@ $(document).ready(function(){
 					table += '<table>';
 					table += '<thead>';
 					table += '<th class="cell100 column2">Position</th>';
-					table += '<th class="cell100 column3">Start date</th>';
-					table += '<th class="cell100 column4">Last Activity</th>';
-					table += '<th class="cell100 column5">Contacts</th>';
-					table += '<th class="cell100 column6">Age</th>';
-					table += '<th class="cell100 column7">Address</th>';
-					table += '<th class="cell100 column8">Card No</th>';
+					table += '<th class="cell100 column3">LimitPrice</th>';
+					table += '<th class="cell100 column4">Price</th>';
+					table += '<th class="cell100 column5">numShares</th>';
+					table += '<th class="cell100 column6">Date Created</th>';
+					table += '<th class="cell100 column7">Status</th>';
+					table += '<th class="cell100 column8">Commission Cost</th>';
+					table += '<th class="cell100 column9">Finished?</th>';
 					table += '</tr>';
 					table += '</thead>';
 					table += '<tbody>';
 					for (var i = 0; i < data.length; i++) {
 	                    table += '<tr class="row100 body">';
 	                    table += '<td class="cell100 column2">' + data[i].symbol + '</td>';
-	                    table += '<td class="cell100 column3">' + data[i].quantity + '</td>';
+	                    table += '<td class="cell100 column3">' + data[i].limitPrice + '</td>';
 	                    table += '<td class="cell100 column4">' + data[i].price + '</td>';
 	                    table += '<td class="cell100 column5">' + data[i].numShares + '</td>';
-	                    table += '<td class="cell100 column6">' + data[i].filltime + '</td>';
+	                    table += '<td class="cell100 column6">' + data[i].placeTime + '</td>';
 	                    table += '<td class="cell100 column7">' + data[i].status + '</td>';
 	                    table += '<td class="cell100 column8">' + data[i].commission + '</td>';
 	                    table += '<td class="cell100 column9">' + data[i].finish + '</td>';
@@ -71,9 +71,7 @@ $(document).ready(function(){
 			});
     	}
 	});
-
 </script>
-
 <style>
 	body, html {
 	  height: 100%;
