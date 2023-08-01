@@ -16,46 +16,36 @@ $(document).ready(function(){
 	    	$.get("trading/order/getAll?token=" + token, function(data) {
 				if(data.length > 0){
 					var table = '<table>';
-					table += '<div class="container-table100">';
-					table += '<div class="wrap-table100">';
-					table += '<div class="table100 ver1">';
-					table += '<div class="table100-firstcol">';
+
 					table += '<table>';
 					table += '<thead>';
-					table += '<th class="cell100 column2">Position</th>';
-					table += '<th class="cell100 column3">LimitPrice</th>';
-					table += '<th class="cell100 column4">Price</th>';
-					table += '<th class="cell100 column5">numShares</th>';
-					table += '<th class="cell100 column6">Date Created</th>';
-					table += '<th class="cell100 column7">Status</th>';
-					table += '<th class="cell100 column8">Commission Cost</th>';
-					table += '<th class="cell100 column9">Finished?</th>';
-					table += '<th class="cell100 column10">Day Order?</th>';
+					table += '<th>Position</th>';
+					table += '<th>LimitPrice</th>';
+					table += '<th>Price</th>';
+					table += '<th>numShares</th>';
+					table += '<th>Date Created</th>';
+					table += '<th>Status</th>';
+					table += '<th>Commission Cost</th>';
+					table += '<th>Finished?</th>';
+					table += '<th>Day Order?</th>';
 					table += '</tr>';
 					table += '</thead>';
-					
 					table += '<tbody>';
 					for (var i = 0; i < data.length; i++) {
-	                    table += '<tr class="row100 body">';
-	                    table += '<td class="cell100 column2">' + data[i].symbol + '</td>';
-	                    table += '<td class="cell100 column3">' + data[i].limitPrice + '</td>';
-	                    table += '<td class="cell100 column4">' + data[i].price + '</td>';
-	                    table += '<td class="cell100 column5">' + data[i].numShares + '</td>';
-	                    table += '<td class="cell100 column6">' + data[i].placeTime + '</td>';
-	                    table += '<td class="cell100 column7">' + data[i].status + '</td>';
-	                    table += '<td class="cell100 column8">' + data[i].commission + '</td>';
-	                    table += '<td class="cell100 column9">' + data[i].finish + '</td>';
-	                    table += '<td class="cell100 column10">' + data[i].day + '</td>';
+
+	                    table += '<td>' + data[i].symbol + '</td>';
+	                    table += '<td>' + data[i].limitPrice + '</td>';
+	                    table += '<td>' + data[i].price + '</td>';
+	                    table += '<td>' + data[i].numShares + '</td>';
+	                    table += '<td>' + data[i].placeTime + '</td>';
+	                    table += '<td>' + data[i].status + '</td>';
+	                    table += '<td>' + data[i].commission + '</td>';
+	                    table += '<td>' + data[i].finish + '</td>';
+	                    table += '<td>' + data[i].day + '</td>';
 	                    table += '</tr>';
 	                }
 					table += '</tbody>';
 					table += '</table>';
-					table += '</div>';
-					table += '</div>';
-					table += '</div>';
-					table += '</div>';
-					table += '</div>';
-					table += '</div>';
 					$("#ptable").html(table);
 	    	}
 			});
