@@ -16,7 +16,6 @@ $(document).ready(function(){
 	    	$.get("trading/order/getAll?token=" + token, function(data) {
 				if(data.length > 0){
 					var table = '<table>';
-
 					table += '<table>';
 					table += '<thead>';
 					table += '<th>Stock Symbol</th>';
@@ -38,14 +37,46 @@ $(document).ready(function(){
 	                    else{
 	                    	table += '<td>' + data[i].limitPrice + '</td>';
 	                    }
-	                    table += '<td>' + data[i].price + '</td>';
-	                    table += '<td>' + data[i].numShares + '</td>';
-	                    table += '<td>' + data[i].placeTime + '</td>';
-	                    table += '<td>' + data[i].status + '</td>';
-	                    table += '<td>' + data[i].commission + '</td>';
+	                    
+	                    if(data[i].price == null) {
+	                    	table += '<td>N/A</td>';
+	                    }
+	                    else{
+	                    	table += '<td>' + data[i].price + '</td>';
+	                    }
+	                    if(data[i].numShares == null) {
+	                    	table += '<td>N/A</td>';
+	                    }
+	                    else{
+	                    	table += '<td>' + data[i].numShares + '</td>';
+	                    }
+	                    if(data[i].fillTime == null) {
+	                    	table += '<td>N/A</td>';
+	                    }
+	                    else{
+	                    	table += '<td>' + data[i].fillTime + '</td>';
+	                    }
+	                    if(data[i].status == null) {
+	                    	table += '<td>N/A</td>';
+	                    }
+	                    else{
+	                    	table += '<td>' + data[i].status + '</td>';
+	                    }
+	                    if(data[i].commission == null) {
+	                    	table += '<td>N/A</td>';
+	                    }
+	                    else{
+	                    	table += '<td>' + data[i].commission + '</td>';
+	                    }
+	                    if(data[i].finish == true) {
+	                    	table += '<tr class="disabled">';
+	                    }
 	                    table += '<td>' + data[i].finish + '</td>';
 	                    table += '</tr>';
+
+	                    
 	                }
+					
 					table += '</tbody>';
 					table += '</table>';
 					$("#ptable").html(table);
@@ -102,7 +133,7 @@ $(document).ready(function(){
   <ul class="bar">
     
         <li class="has-dropdown">
-      <a href="Portfolio.html">My Portfolio</a>
+      <a href="portfolio.html">My Portfolio</a>
     </li>
     <li><a href="order.html" class="active">My Orders</a></li>
     <li class="has-dropdown">
