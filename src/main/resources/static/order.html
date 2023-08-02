@@ -27,21 +27,23 @@ $(document).ready(function(){
 					table += '<th>Status</th>';
 					table += '<th>Commission Cost</th>';
 					table += '<th>Finished?</th>';
-					table += '<th>Day Order?</th>';
 					table += '</tr>';
 					table += '</thead>';
 					table += '<tbody>';
 					for (var i = 0; i < data.length; i++) {
-
 	                    table += '<td>' + data[i].symbol + '</td>';
-	                    table += '<td>' + data[i].limitPrice + '</td>';
+	                    if(data[i].limitPrice == null) {
+	                    	table += '<td>N/A</td>';
+	                    }
+	                    else{
+	                    	table += '<td>' + data[i].limitPrice + '</td>';
+	                    }
 	                    table += '<td>' + data[i].price + '</td>';
 	                    table += '<td>' + data[i].numShares + '</td>';
 	                    table += '<td>' + data[i].placeTime + '</td>';
 	                    table += '<td>' + data[i].status + '</td>';
 	                    table += '<td>' + data[i].commission + '</td>';
 	                    table += '<td>' + data[i].finish + '</td>';
-	                    table += '<td>' + data[i].day + '</td>';
 	                    table += '</tr>';
 	                }
 					table += '</tbody>';

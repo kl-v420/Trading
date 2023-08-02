@@ -33,6 +33,7 @@ public class TradeRest {
 	private final static String MARKET = "market";
 	private final static String LIMIT = "limit";
 	private final static String GTC = "gtc";
+	private final static String NA = "N/A";
 	private final static String DONE = "Done!";
 	private final static String NO_FUNDS = "Insufficient funds.";
 	private final static String EXPIRED = "Order has Expired";
@@ -124,6 +125,7 @@ public class TradeRest {
 				if (!isNotBroke(account.getAmount(), cost)) {
 					order.setFinish(true);
 					order.setStatus(NO_FUNDS);
+					order.setCommission(BigDecimal.ZERO);
 					orderRepo.save(order);
 				} else {
 					if (order.getLimitPrice() != null) {
@@ -135,7 +137,9 @@ public class TradeRest {
 						if (order.isDay() && order.getPlaceTime().isAfter(close)) {
 							order.setFinish(true);
 							order.setStatus(EXPIRED);
+							order.setCommission(BigDecimal.ZERO);
 							orderRepo.save(order);
+
 						} else if (order.getLimitPrice().compareTo(price) >= 0) {
 							fill(order, price, account, cost);
 						}
