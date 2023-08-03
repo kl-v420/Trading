@@ -1,7 +1,6 @@
 package com.sentinelcorp.trading.rest;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +32,6 @@ public class TradeRest {
 	private final static String MARKET = "market";
 	private final static String LIMIT = "limit";
 	private final static String GTC = "gtc";
-	private final static String NA = "N/A";
 	private final static String DONE = "Done!";
 	private final static String NO_FUNDS = "Insufficient funds.";
 	private final static String EXPIRED = "Order has Expired";
@@ -72,7 +70,6 @@ public class TradeRest {
 			if (timeInForce.equals(GTC)) {
 				day = false;
 			}
-
 			if (orderType.equals(MARKET)) {
 				marketOrder(account.getId(), symbol, numShares, day);
 				success = true;
@@ -155,23 +152,14 @@ public class TradeRest {
 	public void fill(Order order, BigDecimal price, Account account, BigDecimal cost) {
 		Position position = posRepo.findByAccountIdAndSymbol(order.getAccountId(), order.getSymbol());
 		if (position != null) {
-			BigDecimal newQuan = BigDecimal.valueOf(order.getNumShares());
-			BigDecimal orderTotal = price.multiply(newQuan);
-			BigDecimal newQuan2 = BigDecimal.valueOf(position.getQuantity());
-			BigDecimal positionTotal = position.getPrice().multiply(newQuan2);
-			BigDecimal total = orderTotal.add(positionTotal);
-			BigDecimal avgPrice = total.divide(newQuan.add(newQuan2), 4, RoundingMode.HALF_UP);
-			position.setPrice(avgPrice);
-			position.setQuantity(position.getQuantity() + order.getNumShares());
 			price = BigDecimal.valueOf(getStock(order.getSymbol()).getC());
-		} else {
 			position = new Position();
 			position.setPrice(price);
 			position.setQuantity(order.getNumShares());
 			position.setSymbol(order.getSymbol());
 			position.setAccountId(account.getId());
+			position.setQuantity(position.getQuantity() + order.getNumShares());
 		}
-
 		posRepo.save(position);
 
 		order.setFillTime(LocalDateTime.now());
