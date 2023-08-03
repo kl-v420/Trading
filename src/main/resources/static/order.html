@@ -25,12 +25,23 @@ $(document).ready(function(){
 					table += '<th>Date Created</th>';
 					table += '<th>Status</th>';
 					table += '<th>Commission Cost</th>';
-					table += '<th>Finished?</th>';
 					table += '</tr>';
 					table += '</thead>';
 					table += '<tbody>';
 					for (var i = 0; i < data.length; i++) {
-	                    table += '<td>' + data[i].symbol + '</td>';
+						
+						if(data[i].finish == true) {
+							table += '<tr class="disabled">';
+						}
+						else{
+							table += '<tr>';
+						}
+						if(data[i].symbol == null){
+							table += '<td>N/A</td>';
+						}
+						else{
+						table += '<td>' + data[i].symbol + '</td>';
+						}
 	                    if(data[i].limitPrice == null) {
 	                    	table += '<td>N/A</td>';
 	                    }
@@ -68,15 +79,8 @@ $(document).ready(function(){
 	                    else{
 	                    	table += '<td>' + data[i].commission + '</td>';
 	                    }
-	                    if(data[i].finish == true) {
-	                    	table += '<tr class="disabled">';
-	                    }
-	                    table += '<td>' + data[i].finish + '</td>';
 	                    table += '</tr>';
-
-	                    
 	                }
-					
 					table += '</tbody>';
 					table += '</table>';
 					$("#ptable").html(table);
