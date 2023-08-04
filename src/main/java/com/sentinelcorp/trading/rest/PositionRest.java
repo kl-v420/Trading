@@ -32,20 +32,17 @@ public class PositionRest {
 		List<Position> positions = positionsRepo.findAllByAccountId(account.getId());
 		HashMap<String, Position> postMap = new HashMap<String, Position>();
 		for (int i = 0; i < positions.size(); i++) {
-			for (int j = 0; j < positions.size(); j++) {
-				if (postMap.containsKey(positions.get(i).getSymbol())) {
+			if (postMap.containsKey(positions.get(i).getSymbol())) {
+				Position position = postMap.get(positions.get(i).getSymbol());
 
-				}
+				position.setQuantity(position.getQuantity());
+				position.setPrice(null);
 
-			}
-			if (account != null && positions.get(i).getSymbol() != null) {
-				postMap.put(positions.get(i).getSymbol(), positions.get(i));
 			} else {
-
+				postMap.put(positions.get(i).getSymbol(), positions.get(i));
 			}
 		}
 		return null;
-
 	}
 
 }

@@ -151,7 +151,6 @@ public class TradeRest {
 
 	public void fill(Order order, BigDecimal price, Account account, BigDecimal cost) {
 		Position position = posRepo.findByAccountIdAndSymbol(order.getAccountId(), order.getSymbol());
-		price = BigDecimal.valueOf(getStock(order.getSymbol()).getC());
 		position = new Position();
 		position.setPrice(price);
 		position.setQuantity(order.getNumShares());
@@ -159,7 +158,6 @@ public class TradeRest {
 		position.setAccountId(account.getId());
 		position.setQuantity(position.getQuantity() + order.getNumShares());
 		posRepo.save(position);
-
 		order.setFillTime(LocalDateTime.now());
 		order.setCommission(COMMISSION);
 		order.setPrice(price);
