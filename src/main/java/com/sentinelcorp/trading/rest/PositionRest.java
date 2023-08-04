@@ -1,7 +1,6 @@
 package com.sentinelcorp.trading.rest;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sentinelcorp.trading.TokenChecker;
 import com.sentinelcorp.trading.model.Account;
-import com.sentinelcorp.trading.model.Order;
 import com.sentinelcorp.trading.model.Position;
 import com.sentinelcorp.trading.repository.PositionsRepository;
 
@@ -30,16 +28,23 @@ public class PositionRest {
 		return p;
 	}
 
-	public Position getStockByAccId(BigDecimal price, Account account, Order order) {
-		Position position = new Position();
-		BigDecimal newQuan = BigDecimal.valueOf(order.getNumShares());
-		BigDecimal orderTotal = price.multiply(newQuan);
-		BigDecimal newQuan2 = BigDecimal.valueOf(position.getQuantity());
-		BigDecimal positionTotal = position.getPrice().multiply(newQuan2);
-		BigDecimal total = orderTotal.add(positionTotal);
-		BigDecimal avgPrice = total.divide(newQuan.add(newQuan2), 4, RoundingMode.HALF_UP);
-		position.setPrice(avgPrice);
-		position.setQuantity(position.getQuantity() + order.getNumShares());
+	public Position SortByAccId(Account account) {
+		List<Position> positions = positionsRepo.findAllByAccountId(account.getId());
+		HashMap<String, Position> postMap = new HashMap<String, Position>();
+		for (int i = 0; i < positions.size(); i++) {
+			for (int j = 0; j < positions.size(); j++) {
+				if (postMap.containsKey(positions.get(i).getSymbol())) {
+
+				}
+
+			}
+			if (account != null && positions.get(i).getSymbol() != null) {
+				postMap.put(positions.get(i).getSymbol(), positions.get(i));
+			} else {
+
+			}
+		}
+		return null;
 
 	}
 
