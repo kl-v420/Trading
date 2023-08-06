@@ -1,6 +1,7 @@
 package com.sentinelcorp.trading.rest;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,10 +40,9 @@ public class PositionRest {
 					postMap.put(postMap.get(i).getSymbol(), positions.get(i));
 				}
 			}
-			for (int j = 0; j < postMap.size(); j++)
-				p.add(postMap.get());
+			p = new ArrayList<Position>(postMap.values());
+			return p;
 		}
-		return p;
-	}
 
+	}
 }
