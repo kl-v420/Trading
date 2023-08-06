@@ -31,16 +31,16 @@ public class PositionRest {
 					Position position = postMap.get(positions.get(i).getSymbol());
 					p.get(i).getPrice();
 					positions.get(i);
-
 					position.setQuantity(position.getQuantity() + postMap.get(positions.get(i)).getQuantity());
+					BigDecimal stock = BigDecimal.valueOf(position.getQuantity());
 					BigDecimal price = postMap.get(positions.get(i)).getPrice();
-					position.setPrice(position.getPrice().add(price).divide(/* something here */ ));
+					position.setPrice(position.getPrice().add(price).divide(stock));
 				} else {
-					postMap.put(positions.get(i).getSymbol(), positions.get(i));
+					postMap.put(postMap.get(i).getSymbol(), positions.get(i));
 				}
 			}
-			for (int i = 0; i < postMap.size(); i++)
-				p.add(postMap.get(/* something here */ ));
+			for (int j = 0; j < postMap.size(); j++)
+				p.add(postMap.get());
 		}
 		return p;
 	}
