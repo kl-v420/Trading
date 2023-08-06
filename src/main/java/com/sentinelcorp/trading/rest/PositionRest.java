@@ -41,8 +41,8 @@ public class PositionRest {
 				}
 			}
 			p = new ArrayList<Position>(postMap.values());
-			return p;
-		}
-
+		return p;
 	}
+
+}
 }
