@@ -1,5 +1,6 @@
 package com.sentinelcorp.trading.rest;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,27 +23,26 @@ public class PositionRest {
 	public List<Position> getAll(@RequestParam(name = "token") String token) {
 		List<Position> p = null;
 		Account account = TokenChecker.verifyToken(token);
+		HashMap<String, Position> postMap = new HashMap<String, Position>();
 		if (account != null) {
-			p = positionsRepo.findAllByAccountId(account.getId());
+			List<Position> positions = positionsRepo.findAllByAccountId(account.getId());
+			for (int i = 0; i < positions.size(); i++) {
+				if (postMap.containsKey(positions.get(i).getSymbol())) {
+					Position position = postMap.get(positions.get(i).getSymbol());
+					p.get(i).getPrice();
+					positions.get(i);
+
+					position.setQuantity(position.getQuantity() + postMap.get(positions.get(i)).getQuantity());
+					BigDecimal price = postMap.get(positions.get(i)).getPrice();
+					position.setPrice(position.getPrice().add(price).divide(/* something here */ ));
+				} else {
+					postMap.put(positions.get(i).getSymbol(), positions.get(i));
+				}
+			}
+			for (int i = 0; i < postMap.size(); i++)
+				p.add(postMap.get(/* something here */ ));
 		}
 		return p;
-	}
-
-	public Position SortByAccId(Account account) {
-		List<Position> positions = positionsRepo.findAllByAccountId(account.getId());
-		HashMap<String, Position> postMap = new HashMap<String, Position>();
-		for (int i = 0; i < positions.size(); i++) {
-			if (postMap.containsKey(positions.get(i).getSymbol())) {
-				Position position = postMap.get(positions.get(i).getSymbol());
-
-				position.setQuantity(position.getQuantity());
-				position.setPrice(null);
-
-			} else {
-				postMap.put(positions.get(i).getSymbol(), positions.get(i));
-			}
-		}
-		return null;
 	}
 
 }
