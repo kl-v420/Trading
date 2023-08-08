@@ -30,8 +30,8 @@ public class PositionRest {
 			for (int i = 0; i < positions.size(); i++) {
 				if (postMap.containsKey(positions.get(i).getSymbol())) {
 					Position position = postMap.get(positions.get(i).getSymbol());
-					p.get(i).getPrice();
-					positions.get(i);
+
+					
 					position.setQuantity(position.getQuantity() + postMap.get(positions.get(i)).getQuantity());
 					BigDecimal stock = BigDecimal.valueOf(position.getQuantity());
 					BigDecimal price = postMap.get(positions.get(i)).getPrice();
@@ -40,9 +40,6 @@ public class PositionRest {
 					postMap.put(postMap.get(i).getSymbol(), positions.get(i));
 				}
 			}
-			p = new ArrayList<Position>(postMap.values());
-		return p;
-	}
-
-}
+		}
+	}p=new ArrayList<Position>(postMap.values());return p;
 }
