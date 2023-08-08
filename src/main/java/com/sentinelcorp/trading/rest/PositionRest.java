@@ -30,16 +30,19 @@ public class PositionRest {
 			for (int i = 0; i < positions.size(); i++) {
 				if (postMap.containsKey(positions.get(i).getSymbol())) {
 					Position position = postMap.get(positions.get(i).getSymbol());
-
-					
-					position.setQuantity(position.getQuantity() + postMap.get(positions.get(i)).getQuantity());
-					BigDecimal stock = BigDecimal.valueOf(position.getQuantity());
-					BigDecimal price = postMap.get(positions.get(i)).getPrice();
-					position.setPrice(position.getPrice().add(price).divide(stock));
+					position.setQuantity(position.getQuantity() + positions.get(i).getQuantity());
+					BigDecimal p1 = BigDecimal.valueOf(positions.get(i).getQuantity());
+					BigDecimal p2 = BigDecimal.valueOf(position.getQuantity());
+					BigDecimal stock = BigDecimal.valueOf(position.getQuantity() + positions.get(i).getQuantity());
+					BigDecimal price = positions.get(i).getPrice().multiply(p1);
+					BigDecimal amounted = position.getPrice().multiply(p2);
+					position.setPrice(amounted.add(price).divide(stock));
 				} else {
 					postMap.put(postMap.get(i).getSymbol(), positions.get(i));
 				}
 			}
 		}
-	}p=new ArrayList<Position>(postMap.values());return p;
+		p = new ArrayList<Position>(postMap.values());
+		return p;
+	}
 }
