@@ -37,8 +37,9 @@ public class PositionRest {
 					BigDecimal price = positions.get(i).getPrice().multiply(p1);
 					BigDecimal amounted = position.getPrice().multiply(p2);
 					position.setPrice(amounted.add(price).divide(stock));
+					postMap.put(position.getSymbol(), position);
 				} else {
-					postMap.put(postMap.get(i).getSymbol(), positions.get(i));
+					postMap.put(positions.get(i).getSymbol(), positions.get(i));
 				}
 			}
 		}
