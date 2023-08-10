@@ -55,9 +55,35 @@ public class TradeRest {
 		this.apiCalls = 0;
 	}
 
-	public void sell(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol,
-			@RequestParam(name = "quantity") String quantity) {
+	public boolean sell(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol,
+			@RequestParam(name = "quantity") String quantity, @RequestParam(name = "account") Account account) {
+		boolean success = false;
+		Account accounted = TokenChecker.verifyToken(token);
+		Position position = posRepo.findByAccountIdAndSymbol(accounted.getId(), symbol);
 
+		if (accounted != null) {
+			for (int i = 0; i < posRepo.findAll().size(); i++) {
+				if (token != null && symbol == posRepo.findAll().get(i).getSymbol()) {
+					if (Integer.parseInt(quantity) == posRepo.findAll().get(i).getQuantity()
+							&& accounted.getId() == account.getId()) {
+						BigDecimal c = BigDecimal.valueOf(Integer.parseInt(quantity));
+						// posRepo.deleteById(account.getId());
+						// posRepo.findAll().remove(i);
+						account.setAmount(account.getAmount().add(c.multiply(position.getPrice())));
+						success = true;
+
+					} else if (Integer.parseInt(quantity) < posRepo.findAll().get(i).getQuantity()) {
+						position.setQuantity(position.getQuantity() - Integer.parseInt(quantity));
+						BigDecimal c = BigDecimal.valueOf(Integer.parseInt(quantity));
+						account.setAmount(account.getAmount().add(c.multiply(position.getPrice())));
+						success = true;
+					} else {
+						// throw error or something
+					}
+				}
+			}
+		}
+		return success;
 	}
 
 	@GetMapping("trading/buyStock")
@@ -70,8 +96,8 @@ public class TradeRest {
 		Account account = TokenChecker.verifyToken(token);
 		if (account != null) {
 			int numShares = Integer.parseInt(quantity);
-
 			boolean day = true;
+
 			if (timeInForce.equals(GTC)) {
 				day = false;
 			}
@@ -188,8 +214,6 @@ public class TradeRest {
 		return amount.compareTo(cost) == 1;
 	}
 
-	// cidheh1r01qvscdan400cidheh1r01qvscdan40g
-	// "https://finnhub.io/api/v1/quote?symbol=AAPL&token=cidheh1r01qvscdan400cidheh1r01qvscdan40g"
 	@GetMapping("trading/getStock")
 	public Stock getStock(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol) {
 		Stock stock = null;
