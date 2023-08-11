@@ -60,26 +60,30 @@ public class TradeRest {
 		boolean success = false;
 		Account accounted = TokenChecker.verifyToken(token);
 		Position position = posRepo.findByAccountIdAndSymbol(accounted.getId(), symbol);
-		List<Position> pList = findAllByAccountIdAndSymbol(accounted.getId(), symbol);
+		List<Position> pList = posRepo.findAllByAccountIdAndSymbol(accounted.getId(), symbol);
 
 		for (int i = 0; i < posRepo.findAll().size(); i++) {
 			if (accounted != null) {
 				if (token != null && symbol == posRepo.findAll().get(i).getSymbol()) {
-					if (Integer.parseInt(quantity) == posRepo.findAll().get(i).getQuantity()
+					if (Integer.parseInt(quantity) == pList.get(i).getQuantity()
 							&& accounted.getId() == account.getId()) {
 						BigDecimal c = BigDecimal.valueOf(Integer.parseInt(quantity));
 						// posRepo.deleteById(account.getId());
-						// posRepo.findAll().remove(i);
+						// pList.remove(i); (which one of these 2)
+
 						account.setAmount(account.getAmount().add(c.multiply(position.getPrice())));
 						success = true;
+						// i feel like I'm forgetting something here
 
-					} else if (Integer.parseInt(quantity) < posRepo.findAll().get(i).getQuantity()) {
+					} else if (Integer.parseInt(quantity) < pList.get(i).getQuantity()) {
 						position.setQuantity(position.getQuantity() - Integer.parseInt(quantity));
 						BigDecimal c = BigDecimal.valueOf(Integer.parseInt(quantity));
 						account.setAmount(account.getAmount().add(c.multiply(position.getPrice())));
 						success = true;
+						// i feel like I'm forgetting something here
 					} else {
-						// throw error or something
+						// throw something
+						// how do this
 					}
 				}
 			}
