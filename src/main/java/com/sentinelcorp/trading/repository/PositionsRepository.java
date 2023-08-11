@@ -11,4 +11,6 @@ public interface PositionsRepository extends JpaRepository<Position, Integer> {
 
 	public List<Position> findAllByAccountId(int id);
 
+	public List<Position> findAllByAccountIdAndSymbol(int id, String symbol);
+
 }

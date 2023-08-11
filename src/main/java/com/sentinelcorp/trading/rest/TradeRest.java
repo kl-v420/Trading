@@ -60,9 +60,10 @@ public class TradeRest {
 		boolean success = false;
 		Account accounted = TokenChecker.verifyToken(token);
 		Position position = posRepo.findByAccountIdAndSymbol(accounted.getId(), symbol);
+		List<Position> pList = findAllByAccountIdAndSymbol(accounted.getId(), symbol);
 
-		if (accounted != null) {
-			for (int i = 0; i < posRepo.findAll().size(); i++) {
+		for (int i = 0; i < posRepo.findAll().size(); i++) {
+			if (accounted != null) {
 				if (token != null && symbol == posRepo.findAll().get(i).getSymbol()) {
 					if (Integer.parseInt(quantity) == posRepo.findAll().get(i).getQuantity()
 							&& accounted.getId() == account.getId()) {
