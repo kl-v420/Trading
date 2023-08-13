@@ -56,36 +56,29 @@ public class TradeRest {
 	}
 
 	public boolean sell(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol,
-			@RequestParam(name = "quantity") String quantity, @RequestParam(name = "account") Account account) {
+			@RequestParam(name = "quantity") int quantity) {
 		boolean success = false;
-		Account accounted = TokenChecker.verifyToken(token);
-		Position position = posRepo.findByAccountIdAndSymbol(accounted.getId(), symbol);
-		List<Position> pList = posRepo.findAllByAccountIdAndSymbol(accounted.getId(), symbol);
+		int newQuan = quantity;
+		int i = 0;
+		Account account = TokenChecker.verifyToken(token);
+		List<Position> pList = posRepo.findAllByAccountIdAndSymbol(account.getId(), symbol);
+		if (account != null) {
+			for (int k = 0; k < pList.size(); k++) {
+				newQuan += pList.get(k).getQuantity();
+			}
 
-		for (int i = 0; i < posRepo.findAll().size(); i++) {
-			if (accounted != null) {
-				if (token != null && symbol == posRepo.findAll().get(i).getSymbol()) {
-					if (Integer.parseInt(quantity) == pList.get(i).getQuantity()
-							&& accounted.getId() == account.getId()) {
-						BigDecimal c = BigDecimal.valueOf(Integer.parseInt(quantity));
-						// posRepo.deleteById(account.getId());
-						// pList.remove(i); (which one of these 2)
-
-						account.setAmount(account.getAmount().add(c.multiply(position.getPrice())));
-						success = true;
-						// i feel like I'm forgetting something here
-
-					} else if (Integer.parseInt(quantity) < pList.get(i).getQuantity()) {
-						position.setQuantity(position.getQuantity() - Integer.parseInt(quantity));
-						BigDecimal c = BigDecimal.valueOf(Integer.parseInt(quantity));
-						account.setAmount(account.getAmount().add(c.multiply(position.getPrice())));
-						success = true;
-						// i feel like I'm forgetting something here
-					} else {
-						// throw something
-						// how do this
-					}
+			while (i < pList.size()) {
+				if (quantity == pList.get(i).getQuantity()) {
+					BigDecimal c = BigDecimal.valueOf(quantity);
+					account.setAmount(account.getAmount().add(c.multiply(pList.get(i).getPrice())));
+					success = true;
+				} else if (quantity < pList.get(i).getQuantity()) {
+					pList.get(i).setQuantity(pList.get(i).getQuantity() - quantity);
+					BigDecimal c = BigDecimal.valueOf(quantity);
+					account.setAmount(account.getAmount().add(c.multiply(pList.get(i).getPrice())));
+					success = true;
 				}
+				i++;
 			}
 		}
 		return success;
