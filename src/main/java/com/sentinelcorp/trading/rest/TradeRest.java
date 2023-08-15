@@ -61,16 +61,21 @@ public class TradeRest {
 		int newQuan = 0;
 		int i = 0;
 		Account account = TokenChecker.verifyToken(token);
-		List<Position> pList = posRepo.findAllByAccountIdAndSymbol(account.getId(), symbol);
 		if (account != null) {
+			List<Position> pList = posRepo.findAllByAccountIdAndSymbol(account.getId(), symbol);
 			for (int k = 0; k < pList.size(); k++) {
 				newQuan += pList.get(k).getQuantity();
 			}
-			while (i < pList.size() && newQuan > 0) {
-				if (newQuan >= quantity) {
+			if (newQuan >= quantity) {
+				while (i < pList.size() && newQuan > 0) {
 					account.setAmount(account.getAmount().add(pList.get(i).getPrice()));
-					quantity = newQuan - pList.get(i).getQuantity();
-
+					if (pList.get(i).getQuantity() > newQuan) {
+						pList.get(i).setQuantity(pList.get(i).getQuantity() - newQuan);
+						newQuan = 0;
+					} else {
+						pList.get(i).setQuantity(0);
+						newQuan = newQuan - pList.get(i).getQuantity();
+					}
 					success = true;
 				}
 				i++;
