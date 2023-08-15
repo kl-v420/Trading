@@ -58,7 +58,7 @@ public class TradeRest {
 	public boolean sell(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol,
 			@RequestParam(name = "quantity") int quantity) {
 		boolean success = false;
-		int newQuan = quantity;
+		int newQuan = 0;
 		int i = 0;
 		Account account = TokenChecker.verifyToken(token);
 		List<Position> pList = posRepo.findAllByAccountIdAndSymbol(account.getId(), symbol);
@@ -66,16 +66,11 @@ public class TradeRest {
 			for (int k = 0; k < pList.size(); k++) {
 				newQuan += pList.get(k).getQuantity();
 			}
+			while (i < pList.size() && newQuan > 0) {
+				if (newQuan >= quantity) {
+					account.setAmount(account.getAmount().add(pList.get(i).getPrice()));
+					quantity = newQuan - pList.get(i).getQuantity();
 
-			while (i < pList.size()) {
-				if (quantity == pList.get(i).getQuantity()) {
-					BigDecimal c = BigDecimal.valueOf(quantity);
-					account.setAmount(account.getAmount().add(c.multiply(pList.get(i).getPrice())));
-					success = true;
-				} else if (quantity < pList.get(i).getQuantity()) {
-					pList.get(i).setQuantity(pList.get(i).getQuantity() - quantity);
-					BigDecimal c = BigDecimal.valueOf(quantity);
-					account.setAmount(account.getAmount().add(c.multiply(pList.get(i).getPrice())));
 					success = true;
 				}
 				i++;
