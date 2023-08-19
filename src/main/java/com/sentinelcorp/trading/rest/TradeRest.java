@@ -72,13 +72,16 @@ public class TradeRest {
 					if (pList.get(i).getQuantity() > newQuan) {
 						pList.get(i).setQuantity(pList.get(i).getQuantity() - newQuan);
 						newQuan = 0;
+						posRepo.save(pList.get(i));
 					} else {
 						pList.get(i).setQuantity(0);
 						newQuan = newQuan - pList.get(i).getQuantity();
 					}
-					success = true;
+					i++;
 				}
-				i++;
+				success = true;
+				accRepo.save(account);
+
 			}
 		}
 		return success;
