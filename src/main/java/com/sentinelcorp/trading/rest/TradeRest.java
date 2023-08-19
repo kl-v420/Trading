@@ -68,7 +68,6 @@ public class TradeRest {
 			}
 			if (newQuan >= quantity) {
 				while (i < pList.size() && newQuan > 0) {
-					account.setAmount(account.getAmount().add(pList.get(i).getPrice()));
 					if (pList.get(i).getQuantity() > newQuan) {
 						pList.get(i).setQuantity(pList.get(i).getQuantity() - newQuan);
 						newQuan = 0;
@@ -80,8 +79,8 @@ public class TradeRest {
 					i++;
 				}
 				success = true;
+				account.setAmount(account.getAmount().add(pList.get(i).getPrice()));
 				accRepo.save(account);
-
 			}
 		}
 		return success;
