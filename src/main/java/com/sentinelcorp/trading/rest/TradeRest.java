@@ -71,16 +71,24 @@ public class TradeRest {
 					if (pList.get(i).getQuantity() > newQuan) {
 						pList.get(i).setQuantity(pList.get(i).getQuantity() - newQuan);
 						newQuan = 0;
-						posRepo.save(pList.get(i));
 					} else {
 						pList.get(i).setQuantity(0);
 						newQuan = newQuan - pList.get(i).getQuantity();
 					}
+					posRepo.save(pList.get(i));
 					i++;
 				}
 				success = true;
 				account.setAmount(account.getAmount().add(pList.get(i).getPrice()));
 				accRepo.save(account);
+				Order order = new Order();
+				order.setFinish(success);
+				order.setCommission(COMMISSION);
+				order.setNumShares(newQuan);
+				order.setSymbol(symbol);
+				order.setPlaceTime(LocalDateTime.now());
+				order.setDay(false);
+				order.setStatus(DONE);
 			}
 		}
 		return success;
