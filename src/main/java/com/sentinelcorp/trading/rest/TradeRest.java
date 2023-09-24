@@ -89,6 +89,7 @@ public class TradeRest {
 				order.setPlaceTime(LocalDateTime.now());
 				order.setDay(false);
 				order.setStatus(DONE);
+				orderRepo.save(order);
 			}
 		}
 		return success;
