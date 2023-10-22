@@ -36,28 +36,23 @@
 				}else{
 					$("#status").html("<div id = \"status\"></div>");
 					
-					$.get("trading/getStock?token="+ token + "&" + $("#tradeForm").serialize(), function (data) {
+					$.get("trading/SellStock?token="+ token + "&" + $("#sellForm").serialize(), function (data) {
 						if(data){
 							$("#stockPrice").html("<font color=\"green\">Stock Price: $" + data.c + "</font>");
 						
-						  	var newForm = '<form id = "buyForm"><br/>';
-						  	newForm += '<label for="orderType">Order Type:</label><br />'
-						  	newForm += '<fieldset  id="orderType"><input type="radio" id="market" checked name="orderType" value="market">market';
-						  	newForm += '<input type="radio" id="limit" name="orderType" value="limit">limit</fieldset><br />';
+						  	var newForm = '<form id = "sellForm"><br/>';
+						  	newForm += '<label for="orderType">Total Being Sold:</label><br />'
 					  		newForm += '<label for="quantity">Quantity:</label><br />';
 					  		newForm += '<input type="text" id="quantity" name="quantity"/><br/><br/>';
-					  		newForm += '<label for="timeInForce">Time In Force:</label><br />';
-					  		newForm += '<fieldset id="timeInForce"><input type="radio" id="day" checked name="timeInForce" value="day">Day';
-					  		newForm += '<input type="radio" id="gtc" name="timeInForce" value="gtc">GTC</fieldset><br />';
 					  		newForm += '<div id = "lp"></div>';
-					  		newForm += '<input type="button" id="buy" value="Buy" /><br /></form>';
+					  		newForm += '<input type="button" id="Sell" value="Sell" /><br /></form>';
 					  		$("#form2").html(newForm);
 						}
 					});
 				}
 			});	
 			
-			$("#form2").on("click", "#buy", function(){
+			$("#form2").on("click", "#Sell", function(){
 				if($("#quantity").val().length == 0) {
 					$("#status").html("<font color=\"red\">You can't enter nothing for quantity</font>");
 				}
@@ -78,7 +73,7 @@
 				else if($("#limitPrice").length > 0 && $("#limitPrice").val() <= 0) {
 					$("#status").html("<font color=\"red\">You can't enter a negative Limit Price</font>");
 				}else{
-					$.get("trading/buyStock?token="+ token + "&"+ $("#tradeForm").serialize() + "&" + $("#buyForm").serialize(), function (data) {
+					$.get("trading/SellStock?token="+ token + "&"+ $("#sellForm").serialize() + "&" + $("#tradeForm").serialize(), function (data) {
 						if(data){
 							window.location.href = "order.html";
 						}
@@ -167,15 +162,14 @@
 </div>
 	
 		<center>
-			<h1>Trading Form</h1>
-			Find a stock on your web brower and put the stock's symbol in here
+			<h1>Stock Selling</h1>
+			Find a stock from your Portfolio List and put the stock's symbol in here
 			</br>
 			<form id = "tradeForm">
   	<label for="symbol">Symbol:</label><br />
   	<input type="text" id="symbol" name="symbol"/><br />
   	<input type="button" id="quote" value="Quote" /><br />
 			</form>
-		<br/><div id = "totalFunds">totalFunds</div>
 		<div id = "stockPrice"></div>
 		<div id = "form2"></div>
 		<div id = "status"></div>

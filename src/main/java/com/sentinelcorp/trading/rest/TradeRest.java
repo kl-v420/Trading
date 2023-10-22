@@ -55,6 +55,7 @@ public class TradeRest {
 		this.apiCalls = 0;
 	}
 
+	@GetMapping("trading/SellStock")
 	public boolean sell(@RequestParam(name = "token") String token, @RequestParam(name = "symbol") String symbol,
 			@RequestParam(name = "quantity") int quantity) {
 		boolean success = false;
