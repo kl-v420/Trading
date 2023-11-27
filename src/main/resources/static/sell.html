@@ -1,5 +1,5 @@
 <html>
-<title>1616 Trading - Portfolio</title>
+<title>1616 Trading - Sell</title>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link rel="stylesheet" href="PortfolioStyle.css" />
@@ -32,16 +32,47 @@
 					table += '<td>' + data[i].symbol + '</td>';
 					table += '<td>' + data[i].quantity + '</td>';
 					table += '<td>' + data[i].price + '</td>';
+					table += '<td>' + '<input type="button" id="sell" value="Sell" />' + '</td>';
 					table += '</tr>';
 				}
-	
 				table += '</table>';
-	
 				$("#ptable").html(table);
 				}
 			});
 		}
 	});
+	
+	$("ptable").on("click", "#sell", function(){
+		var c = 0;
+		if($("#quantity").val().length == 0) {
+//			$("#status").html("<font color=\"red\">You can't enter nothing for quantity</font>");
+		}
+		else if(isNaN($("#quantity").val())) {
+//			$("#status").html("<font color=\"red\">Quantity should be a number</font>");
+			
+		}
+		else if($("#quantity").val() <= 0) {
+//			$("#status").html("<font color=\"red\">You can't enter a negative quantity</font>");
+		}
+		else if($("#limitPrice").length > 0 && $("#limitPrice").val().length == 0) {
+//				$("#status").html("<font color=\"red\">You can't enter nothing for Limit Price</font>");
+		}
+		else if($("#limitPrice").length > 0 && isNaN($("#limitPrice").val())) {
+//			$("#status").html("<font color=\"red\">Limit Price should be a number</font>");		
+		}
+		else if($("#limitPrice").length > 0 && $("#limitPrice").val() <= 0) {
+//			$("#status").html("<font color=\"red\">You can't enter a negative Limit Price</font>");
+		}else{
+			$.get("trading/buyStock?token="+ token + "&"+ $("#tradeForm").serialize() + "&" + $("#buyForm").serialize(), function (data) {
+				if(data){
+					window.location.href = "order.html";
+				}
+			});
+		}
+	});
+	
+	
+	
 </script>
 <style>
 	body, html {
@@ -89,7 +120,9 @@
 <div class="container">
   <nav>
   <ul class="bar">
-    <li><a href="portfolio.html" class="active">My Portfolio</a></li>
+<li class="has-dropdown">
+      <a href="portfolio.html">My Portfolio</a>
+          </li>
         <li class="has-dropdown">
       <a href="order.html">My Orders</a>
     </li>
@@ -98,10 +131,9 @@
     </li>
         <li class="has-dropdown">
       <a href="trades.html">Get Stocks</a>
-      <li class="has-dropdown">
-      	<a href="sell.html">Sell Stocks</a>
-      </li>
-    <li class="has-dropdown">
+        </li>
+    <li><a href="sell.html" class="active">Sell Stocks</a></li>
+    	<li class="has-dropdown">
       <a href="logout.html">Logout</a>
       </ul>
   </nav>
