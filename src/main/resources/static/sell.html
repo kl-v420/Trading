@@ -17,8 +17,14 @@
 				if(data.length > 0){
 					$("#amount").html("<font color=\"Green\">Total Funds: $" + data + "</font>");
 				}
-			});
-			
+				
+			$("#quote").click(function () {
+			if($("#symbol").val().length == 0) {
+				$("#status").html("<font color=\"red\">You can't enter nothing</font>");
+			}
+			else if(!isNaN($("#symbol").val())) {
+				$("#status").html("<font color=\"red\">No quote is all Numbers</font>");
+			}else{
 			$.get("trading/position/getAll?token=" + token, function(data) {
 				if(data.length > 0){
 				var table = '<table>';
@@ -40,39 +46,23 @@
 				}
 			});
 		}
-	});
-	
+
 	$("ptable").on("click", "#sell", function(){
 		var c = 0;
 		if($("#quantity").val().length == 0) {
-//			$("#status").html("<font color=\"red\">You can't enter nothing for quantity</font>");
+
 		}
-		else if(isNaN($("#quantity").val())) {
-//			$("#status").html("<font color=\"red\">Quantity should be a number</font>");
-			
-		}
-		else if($("#quantity").val() <= 0) {
-//			$("#status").html("<font color=\"red\">You can't enter a negative quantity</font>");
-		}
-		else if($("#limitPrice").length > 0 && $("#limitPrice").val().length == 0) {
-//				$("#status").html("<font color=\"red\">You can't enter nothing for Limit Price</font>");
-		}
-		else if($("#limitPrice").length > 0 && isNaN($("#limitPrice").val())) {
-//			$("#status").html("<font color=\"red\">Limit Price should be a number</font>");		
-		}
-		else if($("#limitPrice").length > 0 && $("#limitPrice").val() <= 0) {
-//			$("#status").html("<font color=\"red\">You can't enter a negative Limit Price</font>");
-		}else{
-			$.get("trading/buyStock?token="+ token + "&"+ $("#tradeForm").serialize() + "&" + $("#buyForm").serialize(), function (data) {
+		else{
+			$.get("trading/SellStock?token="+ token + "&"+ $("#tradeForm").serialize() + "&" + $("#buyForm").serialize(), function (data) {
 				if(data){
 					window.location.href = "order.html";
 				}
 			});
 		}
 	});
-	
-	
-	
+	});		
+	});
+			
 </script>
 <style>
 	body, html {
